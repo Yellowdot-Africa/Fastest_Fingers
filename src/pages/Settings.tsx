@@ -67,7 +67,11 @@ const Settings: React.FC = () => {
             className="w-full flex justify-between items-center p-4 bg-[#F9F9F9] rounded-md border-b text-ffgray/80"
             onClick={() => toggleSection('bankInfo')}
           >
-            <span className="font-bold">Bank Information</span>
+            <div className='flex items-center gap-2'>
+              <img  src="/icons/ph_bank-bold.svg"  alt='bank info'/>
+              <span className="font-bold">Bank Information</span>
+            </div>
+
             <span className='text-teal'>{openSection === 'bankInfo' ? '▲' : '▼'}</span>
           </button>
           {openSection === 'bankInfo' && (
@@ -124,7 +128,11 @@ const Settings: React.FC = () => {
             className="w-full flex justify-between items-center p-4 bg-[#F9F9F9] rounded-md border-b text-ffgray/80"
             onClick={() => toggleSection('subscriptionHistory')}
           >
-            <span className="font-bold">Subscription History</span>
+            <div className='flex items-center gap-3'>
+            <img src="/icons/ph_film-script-bold.svg" alt='history'/>
+              <span className="font-bold">Subscription History</span>
+            </div>
+
             <span className='text-teal'>{openSection === 'subscriptionHistory' ? '▲' : '▼'}</span>
           </button>
           {openSection === 'subscriptionHistory' && (
