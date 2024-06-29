@@ -7,18 +7,37 @@ import NotFound from './pages/NotFound';
 import Settings from './pages/Settings';
 import Layout from './components/layout';
 import GamePlay from './pages/GamePlay';
+import PrivateRoute from './components/PrivateRoute';
 
 const App: React.FC = () => {
   return (
     <Routes>
       <Route path="/" element={<Layout />}>
-        <Route index element={<Home />} />
-        <Route path="games" element={<GamePlay />} />
-        <Route path="leaderboard" element={<Leaderboard />} />
-        <Route path="settings" element={<Settings/>} />
+        <Route index element={
+          <PrivateRoute>
+            <Home />
+          </PrivateRoute>
+        } />
+        <Route path="games" element={
+          <PrivateRoute>
+            <GamePlay />
+          </PrivateRoute>
+        } />
+        <Route path="leaderboard" element={
+          <PrivateRoute>
+            <Leaderboard />
+          </PrivateRoute>
+        } />
+        <Route path="settings" element={
+          <PrivateRoute>
+            <Settings />
+          </PrivateRoute>
+        } />
+
         <Route path="*" element={<NotFound />} />
       </Route>
-      <Route path="login" element={<Login/>} />
+      {/* Public route */}
+      <Route path="login" element={<Login />} />
     </Routes>
   );
 };

@@ -2,6 +2,7 @@ import React from 'react';
 
 interface FFButtonProps {
   text: string;
+  loading?: boolean;
   disabled?: boolean;
   bgColor?: string;
   className?: string;
@@ -11,6 +12,7 @@ interface FFButtonProps {
 
 const FFButton: React.FC<FFButtonProps> = ({
   text,
+  loading = false,
   disabled = false,
   variant = 'filled',
   bgColor = '#007880',
@@ -26,12 +28,16 @@ const FFButton: React.FC<FFButtonProps> = ({
 
   return (
     <button
-      className={`py-3.5 px-8 my-3 w-full rounded-3xl text-white font-bold text-sm ${disabled ? disabledStyles : ''} ${className}`}
+      className={`py-3.5 px-8 my-3 w-full rounded-3xl font-bold text-sm ${variant === 'filled' ? "text-white" : 'text-teal'} ${disabled ? disabledStyles : ''} ${className}`}
       disabled={disabled}
       style={style}
       onClick={onClick}
     >
-      {text}
+    {loading ? (
+        <img className='w-6 h-6 mx-auto' src="/icons/spinner-neon.svg" alt="Loading" />
+      ) : (
+        text
+      )}
     </button>
   );
 };

@@ -1,15 +1,37 @@
 import React, { useState, useEffect } from 'react';
 import WinningModal from './modals/WinningModal';
+import ErrorModal from './modals/ErrorModal';
+import { fetchGameQuestions, submitGamePlay } from '../api/apiService';
+import { useAuth } from '../context/AuthContext';
 
+interface GameQuestion {
+    id: number;
+    text: string;
+    correctAnswer: string;
+    hint: string;
+    instruction: string;
+}
 
 const Play: React.FC = () => {
     const getRandomLetter = () => String.fromCharCode(65 + Math.floor(Math.random() * 26));
-    const [selectedLetters, setSelectedLetters] = useState<string[]>(Array(8).fill(''));
-    const [availableLetters, setAvailableLetters] = useState<string[]>(
-        Array(26).fill(null).map(() => getRandomLetter())
-    );
+
+    const generateAvailableLetters = (text: string) => {
+        const requiredLetters = text.split('');
+        const randomLettersCount = 26 - requiredLetters.length;
+        const randomLetters = Array(randomLettersCount).fill(null).map(getRandomLetter);
+        return [...requiredLetters, ...randomLetters].sort(() => Math.random() - 0.5);
+    };
+
+    const [selectedLetters, setSelectedLetters] = useState<string[]>([]);
+    const [availableLetters, setAvailableLetters] = useState<string[]>([]);
+    const [selectedIndices, setSelectedIndices] = useState<number[]>([]);
     const [timer, setTimer] = useState(600);
     const [showWinningModal, setShowWinningModal] = useState(false);
+    const [showErrorModal, setShowErrorModal] = useState(false);
+    const [question, setQuestion] = useState<GameQuestion | null>(null);
+    const [timeUsed, setTimeUsed] = useState<number>(0);
+    const [isLoading, setIsLoading] = useState(false);
+    const { token } = useAuth();
 
     useEffect(() => {
         const countdown = setInterval(() => {
@@ -23,94 +45,133 @@ const Play: React.FC = () => {
         return () => clearInterval(countdown);
     }, [timer]);
 
-    const handleLetterSelect = (letter: string, index: number) => {
+    useEffect(() => {
+        const getQuestions = async () => {
+            if (token) {
+                const data = await fetchGameQuestions(1, token);
+                if (data && data.statusCode === "999") {
+                    setQuestion(data.data[0]);
+                    setAvailableLetters(generateAvailableLetters(data.data[0].text));
+                    setSelectedLetters(Array(data.data[0].text.length).fill(''));
+                }
+            }
+        };
+
+        getQuestions();
+    }, [token]);
+
+    const handleLetterSelect = (index: number) => {
+        const letter = availableLetters[index];
         const firstEmptyIndex = selectedLetters.indexOf('');
-        if (firstEmptyIndex !== -1) {
+        if (firstEmptyIndex !== -1 && !selectedIndices.includes(index)) {
             const newSelectedLetters = [...selectedLetters];
             newSelectedLetters[firstEmptyIndex] = letter;
             setSelectedLetters(newSelectedLetters);
 
-            const newAvailableLetters = [...availableLetters];
-            newAvailableLetters.splice(index, 1);
-            setAvailableLetters(newAvailableLetters);
+            setSelectedIndices([...selectedIndices, index]);
         }
     };
 
     const handleLetterDeselect = (index: number) => {
-        const letter = selectedLetters[index];
-        if (letter) {
-            const newAvailableLetters = [...availableLetters, letter];
-            setAvailableLetters(newAvailableLetters);
+        const letterIndex = selectedLetters[index];
+        if (letterIndex !== '') {
+            const letterPos = availableLetters.indexOf(letterIndex);
 
             const newSelectedLetters = [...selectedLetters];
             newSelectedLetters[index] = '';
             setSelectedLetters(newSelectedLetters);
+
+            const newSelectedIndices = [...selectedIndices];
+            newSelectedIndices.splice(newSelectedIndices.indexOf(letterPos), 1);
+            setSelectedIndices(newSelectedIndices);
         }
     };
 
     const isAllSelected = !selectedLetters.includes('');
 
-    const handleClearOrSubmit = () => {
+    const handleClearOrSubmit = async () => {
         if (!isAllSelected) {
-            setSelectedLetters(Array(8).fill(''));
-            setAvailableLetters(Array(24).fill(null).map(() => getRandomLetter()));
+            setSelectedLetters(Array(question?.text.length || 0).fill(''));
+            setSelectedIndices([]);
         } else {
-            setShowWinningModal(true);
+            setIsLoading(true);
+            setTimeUsed(600 - timer);
+            if (question) {
+                const submittedAnswer = selectedLetters.join('').toLowerCase();
+                if (submittedAnswer === question.correctAnswer.toLowerCase()) {
+                    const response = await submitGamePlay("2347034330799", question.id, submittedAnswer, false, timeUsed, token);
+                    if (response) {
+                        setShowWinningModal(true);
+                    } else {
+                        setShowErrorModal(true);
+                    }
+                } else {
+                    setShowErrorModal(true);
+                }
+            }
+            setIsLoading(false);
         }
     };
-    const resetGame = () => {
-        setSelectedLetters(Array(8).fill(''));
-        setAvailableLetters(Array(24).fill(null).map(getRandomLetter));
-        setTimer(600); // Reset timer to 10 minutes
-        setShowWinningModal(false); // Ensure modal is closed
+
+    const resetGame = async () => {
+        if (token) {
+            const data = await fetchGameQuestions(1, token);
+            if (data && data.statusCode === "999") {
+                setQuestion(data.data[0]);
+                setAvailableLetters(generateAvailableLetters(data.data[0].text));
+                setSelectedLetters(Array(data.data[0].text.length).fill(''));
+                setSelectedIndices([]);
+                setTimer(600);
+                setShowWinningModal(false);
+                setShowErrorModal(false);
+            }
+        }
     };
 
-
     return (
-        <div className=" h-screen flex items-center justify-center mx-4">
+        <div className="h-screen flex items-center justify-center mx-4">
             <div className="max-w-sm text-center w-full">
                 <div>
                     <img className='w-max mx-auto' src="/icons/timer.svg" alt="timer icon" />
                     <span className="font-bold">{Math.floor(timer / 60)}:{timer % 60 < 10 ? `0${timer % 60}` : timer % 60}</span>
                 </div>
                 <div className='my-14'>
-                    <h2 className=" font-bold my-2">Arrange from LEFT to RIGHT</h2>
+                    <h2 className="font-bold my-2">{question?.instruction}</h2>
                     <div className='flex flex-wrap justify-center item-center gap-3'>
-                        {Array(8).fill("A").map((letter, index) =>  (
-                            <p key={index} className='p-2.5 shadow-dark bg-teal rounded text-center text-white font-bold'>{letter}</p>
+                        {question?.text.split('').map((letter, index) => (
+                            <p key={index} className='p-2.5 shadow-dark bg-teal rounded text-center capitalize text-white font-bold'>{letter}</p>
                         ))}
                     </div>
-
                 </div>
 
                 <div className='bg-[#002B2DB2] p-6 rounded-[20px]'>
-
                     <p className='text-white'>Selections</p>
-                    <div className="grid grid-cols-8 items-center gap-1 my-4">
+                    <div className="flex justify-center capitalize items-center gap-1 my-4">
                         {selectedLetters.map((letter, index) => (
-                            <div key={index} className={`p-2 py-2.5 lg:text-lg text-black font-bold bg-white shadow-dark h-12 rounded text-center ${letter ? 'border-[#00F0FF] border-2' : ''}`} onClick={() => handleLetterDeselect(index)}>{letter}</div>
+                            <div key={index} className={`p-2 py-2.5 lg:text-lg text-black font-bold bg-white cursor-pointer shadow-dark h-12 w-10 rounded text-center ${letter ? 'border-[#00F0FF] border-2' : ''}`} onClick={() => handleLetterDeselect(index)}>{letter}</div>
                         ))}
                     </div>
                     <div className="flex flex-wrap justify-around gap-2 mt-6 ">
                         {availableLetters.map((letter, index) => (
-                            <button key={index} className="p-2.5 shadow-dark bg-teal rounded text-center text-white font-bold focus:text-black focus:bg-[#00F0FF] t" onClick={() => handleLetterSelect(letter, index)}>
+                            <button key={index} className={`p-2.5 shadow-dark bg-teal capitalize rounded text-center text-white font-bold ${selectedIndices.includes(index) ? 'bg-[#00F0FF]' : 'bg-teal'}`} onClick={() => handleLetterSelect(index)}>
                                 {letter}
                             </button>
                         ))}
                     </div>
                 </div>
+
                 <button
                     onClick={handleClearOrSubmit}
                     className={`my-8 w-full text-white px-4 py-3.5 rounded-3xl ${selectedLetters.every(letter => letter === '') ? 'bg-[#CCCCCC] cursor-not-allowed' :
                             isAllSelected ? 'bg-teal' : 'bg-black'
                         }`}
-                    disabled={selectedLetters.every(letter => letter === '')}
+                    disabled={selectedLetters.every(letter => letter === '') || isLoading}
                 >
-                    {isAllSelected ? 'Submit' : 'Clear'}
+                    {isLoading ? <img className='w-6 h-6 mx-auto' src="/icons/spinner-white.svg" alt="Loading" /> : (isAllSelected ? 'Submit' : 'Clear')}
                 </button>
-
             </div>
-            <WinningModal isVisible={showWinningModal} onClose={() => setShowWinningModal(false)} onPlayAgain={resetGame}/>
+            <WinningModal isVisible={showWinningModal} onClose={() => setShowWinningModal(false)} onPlayAgain={resetGame} timeUsed={timeUsed} />
+            <ErrorModal isVisible={showErrorModal} onClose={() => setShowErrorModal(false)} />
         </div>
     );
 };

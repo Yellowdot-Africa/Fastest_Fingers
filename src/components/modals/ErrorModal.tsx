@@ -3,7 +3,7 @@ import FFButton from '../common/FFButton';
 import { ModalProps } from '../../types';
 
 
-const WinningModal: React.FC<ModalProps> = ({ isVisible, onClose }) => {
+const ErrorModal: React.FC<ModalProps> = ({ isVisible, onClose }) => {
   if (!isVisible) return null;
 
   return (
@@ -24,4 +24,4 @@ const WinningModal: React.FC<ModalProps> = ({ isVisible, onClose }) => {
   );
 };
 
-export default WinningModal;
+export default ErrorModal;
