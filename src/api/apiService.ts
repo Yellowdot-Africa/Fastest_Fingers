@@ -46,7 +46,6 @@ export async function fetchGameQuestions(count: number, token: string): Promise<
     }
 }
 
-// apiService.ts
 
 export async function submitGamePlay(
     msisdn: string,
@@ -63,7 +62,7 @@ export async function submitGamePlay(
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': token
+                'Authorization': `Bearer ${token}`
             },
             body: JSON.stringify({
                 msisdn,

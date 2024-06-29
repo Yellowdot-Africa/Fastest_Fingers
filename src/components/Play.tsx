@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import WinningModal from './modals/WinningModal';
-import ErrorModal from './modals/ErrorModal';
 import { fetchGameQuestions, submitGamePlay } from '../api/apiService';
 import { useAuth } from '../context/AuthContext';
 
@@ -27,11 +26,11 @@ const Play: React.FC = () => {
     const [selectedIndices, setSelectedIndices] = useState<number[]>([]);
     const [timer, setTimer] = useState(600);
     const [showWinningModal, setShowWinningModal] = useState(false);
-    const [showErrorModal, setShowErrorModal] = useState(false);
     const [question, setQuestion] = useState<GameQuestion | null>(null);
     const [timeUsed, setTimeUsed] = useState<number>(0);
     const [isLoading, setIsLoading] = useState(false);
-    const { token } = useAuth();
+    const [modalMessage, setModalMessage] = useState('');
+    const { token, msisdn } = useAuth();
 
     useEffect(() => {
         const countdown = setInterval(() => {
@@ -95,18 +94,16 @@ const Play: React.FC = () => {
             setSelectedIndices([]);
         } else {
             setIsLoading(true);
-            setTimeUsed(600 - timer);
-            if (question) {
+            setTimeUsed(600 - timer); // Calculate time used
+            if (question && msisdn) {
                 const submittedAnswer = selectedLetters.join('').toLowerCase();
-                if (submittedAnswer === question.correctAnswer.toLowerCase()) {
-                    const response = await submitGamePlay("2347034330799", question.id, submittedAnswer, false, timeUsed, token);
-                    if (response) {
-                        setShowWinningModal(true);
-                    } else {
-                        setShowErrorModal(true);
-                    }
+                const response = await submitGamePlay(msisdn, question.id, submittedAnswer, false, timeUsed, token);
+                if (response && response.statusCode === "999") {
+                    setModalMessage(response.message);
+                    setShowWinningModal(true);
                 } else {
-                    setShowErrorModal(true);
+                    setModalMessage("Oops, Seems something went wrong.");
+                    setShowWinningModal(true);
                 }
             }
             setIsLoading(false);
@@ -123,7 +120,6 @@ const Play: React.FC = () => {
                 setSelectedIndices([]);
                 setTimer(600);
                 setShowWinningModal(false);
-                setShowErrorModal(false);
             }
         }
     };
@@ -162,7 +158,7 @@ const Play: React.FC = () => {
 
                 <button
                     onClick={handleClearOrSubmit}
-                    className={`my-8 w-full text-white px-4 py-3.5 rounded-3xl ${selectedLetters.every(letter => letter === '') ? 'bg-[#CCCCCC] cursor-not-allowed' :
+                    className={`my-8 w-full text-white px-4 py-3.5 rounded-3xl ${selectedLetters.every(letter => letter === '') || isLoading ? 'bg-[#CCCCCC] cursor-not-allowed' :
                             isAllSelected ? 'bg-teal' : 'bg-black'
                         }`}
                     disabled={selectedLetters.every(letter => letter === '') || isLoading}
@@ -170,8 +166,7 @@ const Play: React.FC = () => {
                     {isLoading ? <img className='w-6 h-6 mx-auto' src="/icons/spinner-white.svg" alt="Loading" /> : (isAllSelected ? 'Submit' : 'Clear')}
                 </button>
             </div>
-            <WinningModal isVisible={showWinningModal} onClose={() => setShowWinningModal(false)} onPlayAgain={resetGame} timeUsed={timeUsed} />
-            <ErrorModal isVisible={showErrorModal} onClose={() => setShowErrorModal(false)} />
+            <WinningModal isVisible={showWinningModal} onClose={() => setShowWinningModal(false)} onPlayAgain={resetGame} timeUsed={timeUsed} message={modalMessage} />
         </div>
     );
 };

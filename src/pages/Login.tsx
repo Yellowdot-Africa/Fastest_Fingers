@@ -7,12 +7,11 @@ import { useAuth } from '../context/AuthContext';
 import { loginUser } from '../api/apiService';
 import { useNavigate } from 'react-router-dom';
 
-
 const Login: React.FC = () => {
   const [value, setValue] = useState<string>();
   const [showPopup, setShowPopup] = useState(false);
   const navigate = useNavigate();
-  const { setToken } = useAuth();
+  const { setToken, setMsisdn } = useAuth();
   const [isLoading, setIsLoading] = useState(false);
   const allowedCountries: CustomCountryCode[] = ['NG', 'CM', 'GH', 'BJ', 'ZA'];
 
@@ -26,6 +25,7 @@ const Login: React.FC = () => {
         const token = await loginUser("fastest_fingers_gh", "password");
         if (token) {
             setToken(token);
+            setMsisdn(value!); 
             setShowPopup(true);
             setTimeout(() => {
                 setShowPopup(false);
