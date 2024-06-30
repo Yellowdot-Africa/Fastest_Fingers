@@ -25,7 +25,7 @@ const Login: React.FC = () => {
         const token = await loginUser("fastest_fingers_gh", "password");
         if (token) {
             setToken(token);
-            setMsisdn(value!); 
+            setMsisdn(value);
             setShowPopup(true);
             setTimeout(() => {
                 setShowPopup(false);
@@ -40,6 +40,7 @@ const Login: React.FC = () => {
     }
     setIsLoading(false);
   }
+
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-white font-inria text-ffgray mx-6 my-10">

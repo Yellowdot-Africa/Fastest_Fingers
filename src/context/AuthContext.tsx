@@ -9,12 +9,16 @@ interface AuthContextType {
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-export const AuthProvider: React.FC<{children: ReactNode}> = ({ children }) => {
+export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
     const [token, setToken] = useState('');
     const [msisdn, setMsisdn] = useState('');
 
+    const handleSetMsisdn = (msisdn: string) => {
+        setMsisdn(msisdn.replace('+', ''));
+    };
+
     return (
-        <AuthContext.Provider value={{ token, msisdn, setToken, setMsisdn }}>
+        <AuthContext.Provider value={{ token, msisdn, setToken, setMsisdn: handleSetMsisdn }}>
             {children}
         </AuthContext.Provider>
     );

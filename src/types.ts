@@ -3,6 +3,7 @@ export type CustomCountryCode = 'AC' | 'AD' | 'AE' | 'AF' | 'AG' | 'AI' | 'AL' |
 
 export interface ModalProps {
     isVisible: boolean;
+    message?: string;
     onClose: () => void;
     onConfirm?: () => void;
 }
@@ -10,4 +11,12 @@ export interface ModalProps {
 export interface IconProps {
     active?: boolean;
     className?: string;
+}
+export interface UserProfile {
+    msisdn: string;
+    nickname: string;
+    avatar: number;
+    bank: string;
+    accountNumber: string;
+    accountName: string;
 }
