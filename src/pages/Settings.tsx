@@ -1,25 +1,26 @@
 import React, { useState, useEffect } from 'react';
 import TextInput from '../components/common/TextInput';
 import { useAuth } from '../context/AuthContext';
-import { getUserProfile, saveUserProfile } from '../api/apiService';
+// import { getUserProfile, saveUserProfile } from '../api/apiService';
 import { UserProfile } from '../types';
 import ErrorModal from '../components/modals/ErrorModal';
-
+import { saveUserProfile } from '../api/apiService';
 
 interface BankInfo {
-  accountName: string;
-  accountNumber: string;
-  bank: string;
+    accountName: string;
+    accountNumber: string;
+    bank: string;
 }
 
 interface SubscriptionEntry {
-  id: number;
-  plan: string;
-  date: string;
+    id: number;
+    plan: string;
+    date: string;
 }
 
-const Settings: React.FC = () => {
-  const { token, msisdn } = useAuth();
+  const Settings: React.FC = () => {
+    const { token, msisdn, profile, setProfile } = useAuth();
+    console.log(msisdn)
     const [openSection, setOpenSection] = useState<string>('');
     const [isEditing, setIsEditing] = useState(false);
     const [loading, setLoading] = useState(false);
@@ -30,35 +31,27 @@ const Settings: React.FC = () => {
         accountNumber: '',
         bank: ''
     });
-    const fetchUserProfile = async () => {
-      try {
-          const profile = await getUserProfile(msisdn, token);
-          console.log('Fetched profile:', profile);
-          if (profile) {
-              const { accountName, accountNumber, bank } = profile.data;
-              setBankInfo({ accountName, accountNumber, bank });
-          }
-      } catch (error) {
-        setError('Bank details could not be fetched.');
-          console.error('Error fetching user profile:', error);
+    useEffect(() => {
+      if (profile) {
+          setBankInfo({
+              accountName: profile.accountName,
+              accountNumber: profile.accountNumber,
+              bank: profile.bank
+          });
       }
-  };
+  }, [profile]);
 
-  useEffect(() => {
-      fetchUserProfile();
-  }, [msisdn, token]);
-
-  const subscriptionData: SubscriptionEntry[] = Array.from({ length: 50 }, (_, i) => ({
-    id: i + 1,
-    plan: "N20/Day",
-    date: "02/07/2024"
-  }));
-  const [currentPage, setCurrentPage] = useState(1);
-  const entriesPerPage = 10;
-  const indexOfLastEntry = currentPage * entriesPerPage;
-  const indexOfFirstEntry = indexOfLastEntry - entriesPerPage;
-  const currentEntries = subscriptionData.slice(indexOfFirstEntry, indexOfLastEntry);
-  const totalPages = Math.ceil(subscriptionData.length / entriesPerPage);
+    const subscriptionData: SubscriptionEntry[] = Array.from({ length: 50 }, (_, i) => ({
+        id: i + 1,
+        plan: "N20/Day",
+        date: "02/07/2024"
+    }));
+    const [currentPage, setCurrentPage] = useState(1);
+    const entriesPerPage = 10;
+    const indexOfLastEntry = currentPage * entriesPerPage;
+    const indexOfFirstEntry = indexOfLastEntry - entriesPerPage;
+    const currentEntries = subscriptionData.slice(indexOfFirstEntry, indexOfLastEntry);
+    const totalPages = Math.ceil(subscriptionData.length / entriesPerPage);
 
   const toggleSection = (section: string) => {
     setOpenSection(openSection === section ? '' : section);
@@ -75,35 +68,37 @@ const Settings: React.FC = () => {
   const saveBankInfo = async () => {
     setLoading(true);
     setConfirmText('confirming...');
+    // To Ensure the profile is defined and contains the current data to be saved.
+    const updatedProfile: UserProfile = {
+      msisdn,
+      nickname: profile?.nickname || 'player123',
+      avatar: profile?.avatar || 1,
+      bank: bankInfo.bank,
+      accountNumber: bankInfo.accountNumber,
+      accountName: bankInfo.accountName
+    };
+
     try {
-        const profile: UserProfile = {
-            msisdn,
-            nickname: 'player123',
-            avatar: 1,
-            bank: bankInfo.bank,
-            accountNumber: bankInfo.accountNumber,
-            accountName: bankInfo.accountName
-        };
-
-        const response = await saveUserProfile(profile, token);
+        const response = await saveUserProfile(updatedProfile, token);
         if (response && response.statusCode === '999') {
-          setConfirmText('confirmed');
-          setTimeout(() => {
-            setConfirmText('');
-            setIsEditing(false);
-          }, 1000);
-
-        }else {
-          setError('Bank details could not be saved.');}
+            setConfirmText('confirmed');
+            setTimeout(() => {
+                setConfirmText('');
+                setIsEditing(false);
+            }, 1000);
+            setProfile(updatedProfile);
+        } else {
+            setError('Bank details could not be saved.');
+        }
     } catch (error) {
         setError('Bank details could not be saved.');
         console.error('Error saving user profile:', error);
     }
     setLoading(false);
   };
-  const closeErrorModal = () => {
-    setError('');
-  };
+    const closeErrorModal = () => {
+        setError('');
+    };
 
   return (
     <div>

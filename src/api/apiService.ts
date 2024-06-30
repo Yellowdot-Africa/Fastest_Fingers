@@ -1,9 +1,9 @@
-//apiService.ts
+// apiService.ts
 import { UserProfile } from "../types";
-
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 // Function to login and fetch token
 export async function loginUser(username: string, password: string): Promise<string | null> {
-    const url = `https://ydvassdp.com:2001/api/FastestFingers/Authorization/Login`;
+    const url = `${API_BASE_URL}api/FastestFingers/Authorization/Login`;
 
     try {
         const response = await fetch(url, {
@@ -21,12 +21,11 @@ export async function loginUser(username: string, password: string): Promise<str
     } catch (error) {
         console.error('Login error:', error);
         throw error;
-
     }
 }
 // Function to fetch game questions
 export async function fetchGameQuestions(count: number, token: string): Promise<any> {
-    const url = `https://ydvassdp.com:2001/api/FastestFingers/GamePlay/GetGameQuestions?count=${count}`;
+    const url = `${API_BASE_URL}api/FastestFingers/GamePlay/GetGameQuestions?count=${count}`;
 
     try {
         const response = await fetch(url, {
@@ -49,7 +48,6 @@ export async function fetchGameQuestions(count: number, token: string): Promise<
     }
 }
 
-
 export async function submitGamePlay(
     msisdn: string,
     questionId: number,
@@ -58,7 +56,7 @@ export async function submitGamePlay(
     gameDuration: number,
     token: string
 ): Promise<{ statusCode: string; statusMessage: string; message: string; } | null> {
-    const url = `https://ydvassdp.com:2001/api/FastestFingers/GamePlay/SubmitGamePlay`;
+    const url = `${API_BASE_URL}api/FastestFingers/GamePlay/SubmitGamePlay`;
 
     try {
         const response = await fetch(url, {
@@ -87,8 +85,9 @@ export async function submitGamePlay(
         throw error;
     }
 }
+
 export async function getUserProfile(msisdn: string, token: string): Promise<any> {
-    const url = `https://ydvassdp.com:2001/api/FastestFingers/Profile/GetUserProfile?msisdn=${msisdn}`;
+    const url = `${API_BASE_URL}api/FastestFingers/Profile/GetUserProfile?msisdn=${msisdn}`;
 
     try {
         const response = await fetch(url, {
@@ -113,7 +112,7 @@ export async function getUserProfile(msisdn: string, token: string): Promise<any
 
 // Function to save user profile
 export async function saveUserProfile(profile: UserProfile, token: string): Promise<any> {
-    const url = `https://ydvassdp.com:2001/api/FastestFingers/Profile/SaveUserProfile`;
+    const url = `${API_BASE_URL}/api/FastestFingers/Profile/SaveUserProfile`;
 
     try {
         const response = await fetch(url, {
@@ -137,3 +136,26 @@ export async function saveUserProfile(profile: UserProfile, token: string): Prom
     }
 }
 
+export async function fetchLeaderboard(msisdn: string, token: string): Promise<any> {
+    const url = `${API_BASE_URL}api/FastestFingers/Leaderboard/GetLeaderboardWithSubscriber?msisdn=${msisdn}`;
+
+    try {
+        const response = await fetch(url, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            }
+        });
+
+        if (!response.ok) {
+            throw new Error(`Failed to fetch leaderboard: ${response.status} ${response.statusText}`);
+        }
+
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        console.error('Error fetching leaderboard:', error);
+        throw error;
+    }
+}
