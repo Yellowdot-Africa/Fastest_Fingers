@@ -1,9 +1,11 @@
 // apiService.ts
 import { UserProfile } from "../types";
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+// const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+const baseUrl = "https://ydvassdp.com:2001"
+
 // Function to login and fetch token
 export async function loginUser(username: string, password: string): Promise<string | null> {
-    const url = `${API_BASE_URL}api/FastestFingers/Authorization/Login`;
+    const url = `${baseUrl}/api/FastestFingers/Authorization/Login`;
 
     try {
         const response = await fetch(url, {
@@ -25,7 +27,7 @@ export async function loginUser(username: string, password: string): Promise<str
 }
 // Function to fetch game questions
 export async function fetchGameQuestions(count: number, token: string): Promise<any> {
-    const url = `${API_BASE_URL}api/FastestFingers/GamePlay/GetGameQuestions?count=${count}`;
+    const url = `${baseUrl}/api/FastestFingers/GamePlay/GetGameQuestions?count=${count}`;
 
     try {
         const response = await fetch(url, {
@@ -56,7 +58,7 @@ export async function submitGamePlay(
     gameDuration: number,
     token: string
 ): Promise<{ statusCode: string; statusMessage: string; message: string; } | null> {
-    const url = `${API_BASE_URL}api/FastestFingers/GamePlay/SubmitGamePlay`;
+    const url = `${baseUrl}/api/FastestFingers/GamePlay/SubmitGamePlay`;
 
     try {
         const response = await fetch(url, {
@@ -87,7 +89,7 @@ export async function submitGamePlay(
 }
 
 export async function getUserProfile(msisdn: string, token: string): Promise<any> {
-    const url = `${API_BASE_URL}api/FastestFingers/Profile/GetUserProfile?msisdn=${msisdn}`;
+    const url = `${baseUrl}/api/FastestFingers/Profile/GetUserProfile?msisdn=${msisdn}`;
 
     try {
         const response = await fetch(url, {
@@ -112,7 +114,7 @@ export async function getUserProfile(msisdn: string, token: string): Promise<any
 
 // Function to save user profile
 export async function saveUserProfile(profile: UserProfile, token: string): Promise<any> {
-    const url = `${API_BASE_URL}/api/FastestFingers/Profile/SaveUserProfile`;
+    const url = `${baseUrl}/api/FastestFingers/Profile/SaveUserProfile`;
 
     try {
         const response = await fetch(url, {
@@ -137,7 +139,7 @@ export async function saveUserProfile(profile: UserProfile, token: string): Prom
 }
 
 export async function fetchLeaderboard(msisdn: string, token: string): Promise<any> {
-    const url = `${API_BASE_URL}api/FastestFingers/Leaderboard/GetLeaderboardWithSubscriber?msisdn=${msisdn}`;
+    const url = `$${baseUrl}/api/FastestFingers/Leaderboard/GetLeaderboardWithSubscriber?msisdn=${msisdn}`;
 
     try {
         const response = await fetch(url, {
