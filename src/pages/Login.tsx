@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import 'react-phone-number-input/style.css';
 import PhoneInput, { isPossiblePhoneNumber } from 'react-phone-number-input';
 import FFButton from '../components/common/FFButton';
-import ErrorModal from '../components/modals/ErrorModal'; 
+import ErrorModal from '../components/modals/ErrorModal';
 import { CustomCountryCode } from '../types';
 import { useAuth } from '../context/AuthContext';
 import { getUserProfile, loginUser } from '../api/apiService';
@@ -14,7 +14,7 @@ const Login: React.FC = () => {
   const navigate = useNavigate();
   const { setToken, setMsisdn, setProfile } = useAuth();
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null); // Error state
+  const [error, setError] = useState<string | null>(null);
   const allowedCountries: CustomCountryCode[] = ['NG', 'CM', 'GH', 'BJ', 'ZA'];
 
   const handleLogin = async () => {
@@ -27,11 +27,15 @@ const Login: React.FC = () => {
         const token = await loginUser("fastest_fingers_gh", "password");
         if (token) {
             setToken(token);
-            setMsisdn(value.replace('+', ''));
+            const cleanMsisdn = value.replace('+', '');
+            setMsisdn(cleanMsisdn);
 
-            const profileData = await getUserProfile(value.replace('+', ''), token);
-            if (profileData) {
-                setProfile(profileData.data);
+            try {
+              const profileData = await getUserProfile(cleanMsisdn, token);
+              setProfile(profileData?.data || { msisdn: cleanMsisdn });
+            } catch (profileError) {
+              console.warn('User profile not found or error fetching:', profileError);
+              setProfile({ msisdn: cleanMsisdn });
             }
             setShowPopup(true);
             setTimeout(() => {
@@ -59,7 +63,7 @@ const Login: React.FC = () => {
           <label htmlFor="phone" className="block text-left text-xs italic mb-2 text-ffgray/70">Phone Number Input</label>
           <PhoneInput
             international
-            defaultCountry="NG"
+            defaultCountry="GH"
             value={value}
             onChange={setValue}
             className="custom-phone-input"

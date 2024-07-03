@@ -7,7 +7,7 @@ interface AuthContextType {
     profile: UserProfile | null;
     setToken: (token: string) => void;
     setMsisdn: (msisdn: string) => void;
-    setProfile: (profile: UserProfile) => void;
+    setProfile: (profile: Partial<UserProfile>) => void;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -17,9 +17,21 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     const [msisdn, setMsisdn] = useState('');
     const [profile, setProfile] = useState<UserProfile | null>(null);
 
+    const handleSetProfile = (profileData: Partial<UserProfile>) => {
+        // default state
+        const completeProfile: UserProfile = {
+            msisdn: profileData.msisdn || msisdn,
+            nickname: profileData.nickname || '',
+            avatar: profileData.avatar || 0,
+            bank: profileData.bank || '',
+            accountNumber: profileData.accountNumber || '',
+            accountName: profileData.accountName || ''
+        };
+        setProfile(completeProfile);
+    };
 
     return (
-        <AuthContext.Provider value={{ token, msisdn, profile, setToken, setMsisdn, setProfile, }}>
+        <AuthContext.Provider value={{ token, msisdn, profile, setToken, setMsisdn, setProfile: handleSetProfile }}>
             {children}
         </AuthContext.Provider>
     );

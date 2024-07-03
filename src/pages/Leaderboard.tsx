@@ -25,7 +25,7 @@ const Leaderboard: React.FC = () => {
         }
       } catch (error) {
         console.error('Error fetching leaderboard:', error);
-        setError('Failed to fetch leaderboard data.');
+        // setError('Failed to fetch leaderboard data.');
       }
     };
 

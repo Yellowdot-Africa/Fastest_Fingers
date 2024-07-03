@@ -11,7 +11,7 @@ interface GameQuestion {
     instruction: string;
 }
 
-const Play: React.FC = () => {
+const Play: React.FC<{ onClose: () => void }> = ({ onClose }) => {
     const getRandomLetter = () => String.fromCharCode(65 + Math.floor(Math.random() * 26));
 
     const generateAvailableLetters = (text: string) => {
@@ -123,6 +123,9 @@ const Play: React.FC = () => {
             }
         }
     };
+    const handleGoHome = () => {
+        onClose();  // This will trigger the Home component to hide the Play component
+    };
 
     return (
         <div className="h-screen flex items-center justify-center mx-4">
@@ -149,7 +152,7 @@ const Play: React.FC = () => {
                     </div>
                     <div className="flex flex-wrap justify-around gap-2 mt-6 ">
                         {availableLetters.map((letter, index) => (
-                            <button key={index} className={`p-2.5 shadow-dark bg-teal capitalize rounded text-center text-white font-bold ${selectedIndices.includes(index) ? 'bg-[#00F0FF]' : 'bg-teal'}`} onClick={() => handleLetterSelect(index)}>
+                            <button key={index} className={`p-2.5 shadow-dark  capitalize rounded text-center text-white font-bold ${selectedIndices.includes(index) ? 'bg-[#00F0FF]' : 'bg-teal'}`} onClick={() => handleLetterSelect(index)}>
                                 {letter}
                             </button>
                         ))}
@@ -166,7 +169,7 @@ const Play: React.FC = () => {
                     {isLoading ? <img className='w-6 h-6 mx-auto' src="/icons/spinner-white.svg" alt="Loading" /> : (isAllSelected ? 'Submit' : 'Clear')}
                 </button>
             </div>
-            <WinningModal isVisible={showWinningModal} onClose={() => setShowWinningModal(false)} onPlayAgain={resetGame} timeUsed={timeUsed} message={modalMessage} />
+            <WinningModal isVisible={showWinningModal} onClose={() => setShowWinningModal(false)} onPlayAgain={resetGame} timeUsed={timeUsed} message={modalMessage} onGoHome={handleGoHome}/>
         </div>
     );
 };
