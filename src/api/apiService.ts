@@ -138,7 +138,7 @@ export async function saveUserProfile(profile: UserProfile, token: string): Prom
 }
 
 export async function fetchLeaderboard(msisdn: string, token: string): Promise<any> {
-    const url = `$${baseUrl}/api/FastestFingers/Leaderboard/GetLeaderboardWithSubscriber?msisdn=${msisdn}`;
+    const url = `${baseUrl}/api/FastestFingers/Leaderboard/GetLeaderboardWithSubscriber?msisdn=${msisdn}`;
 
     try {
         const response = await fetch(url, {
@@ -160,8 +160,6 @@ export async function fetchLeaderboard(msisdn: string, token: string): Promise<a
         throw error;
     }
 }
-
-// apiService.ts
 
 // Function to check subscription status
 export async function checkSubscriptionStatus(msisdn: string, productId: number): Promise<{ statusCode: string; message: string; }> {
