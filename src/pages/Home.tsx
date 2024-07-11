@@ -22,7 +22,7 @@ const Home: React.FC = () => {
   return (
     <>
       {!isPlaying ? (
-        <section className="h-screen font-inria py-4 md:py-10 pb-2 px-6 md:px-16 lg:px-24 text-ffgray">
+        <section className="max-lg:h-screen font-inria py-4 md:py-10 pb-2 px-6 md:px-16 lg:px-24 text-ffgray">
           <div className="flex gap-1 max-md:mb-8">
             <div className="">
               <img src="/images/hand-wave.svg" alt="hand wave" />

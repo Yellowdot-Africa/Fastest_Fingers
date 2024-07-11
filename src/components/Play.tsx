@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import WinningModal from './modals/WinningModal';
 import { fetchGameQuestions, submitGamePlay } from '../api/apiService';
 import { useAuth } from '../context/AuthContext';
+import ErrorModal from '../components/modals/ErrorModal';
 
 interface GameQuestion {
     id: number;
@@ -12,6 +13,7 @@ interface GameQuestion {
 }
 
 const Play: React.FC<{ onClose: () => void }> = ({ onClose }) => {
+    const [error, setError] = useState<string | null>(null);
     const getRandomLetter = () => String.fromCharCode(65 + Math.floor(Math.random() * 26));
 
     const generateAvailableLetters = (text: string) => {
@@ -47,11 +49,18 @@ const Play: React.FC<{ onClose: () => void }> = ({ onClose }) => {
     useEffect(() => {
         const getQuestions = async () => {
             if (token) {
-                const data = await fetchGameQuestions(1, token);
-                if (data && data.statusCode === "999") {
-                    setQuestion(data.data[0]);
-                    setAvailableLetters(generateAvailableLetters(data.data[0].text));
-                    setSelectedLetters(Array(data.data[0].text.length).fill(''));
+                try {
+                    const data = await fetchGameQuestions(1, token);
+                    if (data && data.statusCode === "999") {
+                        setQuestion(data.data[0]);
+                        setAvailableLetters(generateAvailableLetters(data.data[0].text));
+                        setSelectedLetters(Array(data.data[0].text.length).fill(''));
+                    } else {
+                        throw new Error(data.message || "Failed to fetch questions");
+                    }
+                } catch (error) {
+                    console.error('Error fetching questions:', error);
+                    setError((error as Error).message);
                 }
             }
         };
@@ -124,7 +133,7 @@ const Play: React.FC<{ onClose: () => void }> = ({ onClose }) => {
         }
     };
     const handleGoHome = () => {
-        onClose();  // This will trigger the Home component to hide the Play component
+        onClose();
     };
 
     return (
@@ -162,14 +171,15 @@ const Play: React.FC<{ onClose: () => void }> = ({ onClose }) => {
                 <button
                     onClick={handleClearOrSubmit}
                     className={`my-8 w-full text-white px-4 py-3.5 rounded-3xl ${selectedLetters.every(letter => letter === '') || isLoading ? 'bg-[#CCCCCC] cursor-not-allowed' :
-                            isAllSelected ? 'bg-teal' : 'bg-black'
+                        isAllSelected ? 'bg-teal' : 'bg-black'
                         }`}
                     disabled={selectedLetters.every(letter => letter === '') || isLoading}
                 >
                     {isLoading ? <img className='w-6 h-6 mx-auto' src="/icons/spinner-white.svg" alt="Loading" /> : (isAllSelected ? 'Submit' : 'Clear')}
                 </button>
             </div>
-            <WinningModal isVisible={showWinningModal} onClose={() => setShowWinningModal(false)} onPlayAgain={resetGame} timeUsed={timeUsed} message={modalMessage} onGoHome={handleGoHome}/>
+            <WinningModal isVisible={showWinningModal} onClose={() => setShowWinningModal(false)} onPlayAgain={resetGame} timeUsed={timeUsed} message={modalMessage} onGoHome={handleGoHome} />
+            <ErrorModal isVisible={!!error} message={error || 'An error occurred'} onClose={() => {setError(null); onClose()} } />
         </div>
     );
 };

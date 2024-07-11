@@ -19,7 +19,7 @@ const SubscribeModal: React.FC<ModalProps> = ({ isVisible, onClose }) => {
             <option value="100">N100/Day</option>
             <option value="200">N200/Day</option>
           </select>
-          <p className='bg-[#9A000033] py-2  italic'>Subscription request failed, Try later</p>
+          <p className='bg-[#9A000033] py-2 hidden italic'>Subscription request failed, Try later</p>
           <FFButton text="Subscribe Now" className="mt-6" />
         </div>
       </div>

@@ -8,6 +8,7 @@ import Settings from './pages/Settings';
 import Layout from './components/layout';
 import GamePlay from './pages/GamePlay';
 import PrivateRoute from './components/PrivateRoute';
+import Subscribe from './pages/Subcribe';
 
 const App: React.FC = () => {
   return (
@@ -32,6 +33,9 @@ const App: React.FC = () => {
           <PrivateRoute>
             <Settings />
           </PrivateRoute>
+        } />
+         <Route path="subscribe" element={
+          <Subscribe />
         } />
 
         <Route path="*" element={<NotFound />} />

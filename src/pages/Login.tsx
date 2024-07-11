@@ -5,14 +5,14 @@ import FFButton from '../components/common/FFButton';
 import ErrorModal from '../components/modals/ErrorModal';
 import { CustomCountryCode } from '../types';
 import { useAuth } from '../context/AuthContext';
-import { getUserProfile, loginUser } from '../api/apiService';
+import { checkSubscriptionStatus, getUserProfile, loginUser } from '../api/apiService';
 import { useNavigate } from 'react-router-dom';
 
 const Login: React.FC = () => {
   const [value, setValue] = useState<string>();
   const [showPopup, setShowPopup] = useState(false);
   const navigate = useNavigate();
-  const { setToken, setMsisdn, setProfile } = useAuth();
+  const { setToken, setMsisdn, setProfile, setIsSubscribed } = useAuth();
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const allowedCountries: CustomCountryCode[] = ['NG', 'CM', 'GH', 'BJ', 'ZA'];
@@ -23,12 +23,21 @@ const Login: React.FC = () => {
         return;
     }
     setIsLoading(true);
+    const cleanMsisdn = value.replace('+', '');
     try {
+        const subscriptionStatus = await checkSubscriptionStatus(cleanMsisdn, 1);
+        if (subscriptionStatus.statusCode !== '999') {
+          console.error('sub error:', subscriptionStatus.statusCode )
+            setIsSubscribed(false);
+            setError(subscriptionStatus.message || 'Subscription check failed. Please try again.');
+            setIsLoading(false);
+            return;
+        }
         const token = await loginUser("fastest_fingers_gh", "password");
         if (token) {
             setToken(token);
-            const cleanMsisdn = value.replace('+', '');
             setMsisdn(cleanMsisdn);
+            setIsSubscribed(true);
 
             try {
               const profileData = await getUserProfile(cleanMsisdn, token);
@@ -46,7 +55,7 @@ const Login: React.FC = () => {
             setError('Failed to retrieve token');
         }
     } catch (error) {
-        setError('Login failed');
+        setError((error as Error).message || 'Login failed');
         console.error('Login error:', error);
     }
     setIsLoading(false);

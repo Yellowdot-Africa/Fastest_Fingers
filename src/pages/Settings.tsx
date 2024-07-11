@@ -20,7 +20,7 @@ interface SubscriptionEntry {
 
   const Settings: React.FC = () => {
     const { token, msisdn, profile, setProfile } = useAuth();
-    console.log(msisdn)
+    // console.log(msisdn)
     const [openSection, setOpenSection] = useState<string>('');
     const [isEditing, setIsEditing] = useState(false);
     const [loading, setLoading] = useState(false);

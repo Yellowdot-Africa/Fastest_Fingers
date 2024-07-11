@@ -3,13 +3,17 @@ import { NavLink, useLocation } from 'react-router-dom';
 import navData from './navData';
 import ProfileModal from '../modals/ProfileModal';
 import ProfileIcon from '../common/ProfileIcon';
+import { useAuth } from '../../context/AuthContext';
 
 const Navbar: React.FC = () => {
+  const { isSubscribed } = useAuth();
   const [isProfileModalVisible, setProfileModalVisible] = useState(false);
   const location = useLocation();
 
   const toggleProfileModal = () => {
-    setProfileModalVisible(!isProfileModalVisible);
+    if (!isSubscribed) {
+      setProfileModalVisible(!isProfileModalVisible);
+    }
   };
 
   return (
@@ -32,8 +36,12 @@ const Navbar: React.FC = () => {
           })}
         </div>
         <div className="flex flex-col items-center justify-between cursor-pointer" onClick={toggleProfileModal}>
-          <ProfileIcon className=' h-6' />
-          <span>Profile</span>
+          { isSubscribed ?
+            <>
+              <ProfileIcon className=' h-6' />
+              <span>Profile</span>
+            </> : ''
+          }
         </div>
       </div>
       <ProfileModal isVisible={isProfileModalVisible} onClose={toggleProfileModal} />

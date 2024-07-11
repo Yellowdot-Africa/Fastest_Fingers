@@ -17,7 +17,7 @@ const Leaderboard: React.FC = () => {
     const fetchData = async () => {
       try {
         const data = await fetchLeaderboard(msisdn, token);
-        console.log('Fetched leaderboard:', data);
+        // console.log('Fetched leaderboard:', data);
         if (data && data.statusCode === '999') {
           setLeaderboardData(data.data);
         } else {

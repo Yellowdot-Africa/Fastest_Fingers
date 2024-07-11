@@ -1,4 +1,3 @@
-// apiService.ts
 import { UserProfile } from "../types";
 // const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 const baseUrl = "https://ydvassdp.com:2001"
@@ -159,5 +158,30 @@ export async function fetchLeaderboard(msisdn: string, token: string): Promise<a
     } catch (error) {
         console.error('Error fetching leaderboard:', error);
         throw error;
+    }
+}
+
+// apiService.ts
+
+// Function to check subscription status
+export async function checkSubscriptionStatus(msisdn: string, productId: number): Promise<{ statusCode: string; message: string; }> {
+    const url = `https://ydvassdp.com:6001/api/DataSync/Subscription/CheckSubscriptionStatus?msisdn=${msisdn}&productId=${productId}`;
+
+    try {
+        const response = await fetch(url, {
+            method: 'GET',
+            headers: { 'accept': 'application/json' }
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+            throw new Error(data.message || `Failed to check subscription status: ${response.status} ${response.statusText}`);
+        }
+
+        return data;
+    } catch (error) {
+        console.error('Error checking subscription status:', (error as Error).message);
+        throw new Error((error as Error).message);
     }
 }

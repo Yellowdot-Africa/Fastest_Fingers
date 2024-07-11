@@ -5,9 +5,11 @@ interface AuthContextType {
     token: string;
     msisdn: string;
     profile: UserProfile | null;
+    isSubscribed: boolean;
     setToken: (token: string) => void;
     setMsisdn: (msisdn: string) => void;
     setProfile: (profile: Partial<UserProfile>) => void;
+    setIsSubscribed: (isSubscribed: boolean) => void;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -16,6 +18,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     const [token, setToken] = useState('');
     const [msisdn, setMsisdn] = useState('');
     const [profile, setProfile] = useState<UserProfile | null>(null);
+    const [isSubscribed, setIsSubscribed] = useState(false);
 
     const handleSetProfile = (profileData: Partial<UserProfile>) => {
         // default state
@@ -31,7 +34,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     };
 
     return (
-        <AuthContext.Provider value={{ token, msisdn, profile, setToken, setMsisdn, setProfile: handleSetProfile }}>
+        <AuthContext.Provider value={{ token, msisdn, profile, setToken, setMsisdn, setProfile: handleSetProfile, isSubscribed, setIsSubscribed }}>
             {children}
         </AuthContext.Provider>
     );
