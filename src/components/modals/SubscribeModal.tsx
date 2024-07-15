@@ -12,7 +12,7 @@ const SubscribeModal: React.FC<ModalProps> = ({ isVisible, onClose }) => {
         <div className="md:w-3/5 mx-auto text-center relative">
         <button onClick={onClose} className="absolute font-light -top-1 right-0 text-2xl">×</button>
           <span className="">Subscribe to a plan to proceed</span>
-          <label htmlFor="select" className="block mt-4 text-left text-xs text-ffgray/70">Phone Number Input</label>
+          <label htmlFor="select" className="block mt-4 text-left text-xs text-ffgray/70">Select Subscription Plan</label>
           <select id="select" className="mb-4 mt-1 w-full py-3 px-4 border border-[#00F0FF] rounded-3xl">
             <option value="20">N20/Day</option>
             <option value="50">N50/Day</option>

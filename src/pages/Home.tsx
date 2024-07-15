@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
+import { useOutletContext } from 'react-router-dom';
 import FFButton from '../components/common/FFButton';
 import GamePlayModal from '../components/modals/GamePlayModal';
 import Play from '../components/Play';
 
 const Home: React.FC = () => {
   const [isModalVisible, setIsModalVisible] = useState(false);
-    const [isPlaying, setIsPlaying] = useState(false);
+  const { isPlaying, setIsPlaying } = useOutletContext<{ isPlaying: boolean; setIsPlaying: React.Dispatch<React.SetStateAction<boolean>> }>();
 
     const toggleModal = () => {
         setIsModalVisible(!isModalVisible);
@@ -22,7 +23,7 @@ const Home: React.FC = () => {
   return (
     <>
       {!isPlaying ? (
-        <section className="max-lg:h-screen font-inria py-4 md:py-10 pb-2 px-6 md:px-16 lg:px-24 text-ffgray">
+        <section className=" font-inria py-4 md:py-10 pb-2 px-6 md:px-16 lg:px-24 text-ffgray overflow-y-auto">
           <div className="flex gap-1 max-md:mb-8">
             <div className="">
               <img src="/images/hand-wave.svg" alt="hand wave" />
@@ -50,7 +51,7 @@ const Home: React.FC = () => {
               </div>
             </div>
 
-            <div className="mx-auto text-center mt-10">
+            <div className="mx-auto text-center mt-10 max-md:mb-16">
               <p>PLAY TO WIN AMAZING PRIZES, NOW!</p>
               <FFButton text="Play Now" className="md:w-2/3" onClick={toggleModal} />
             </div>

@@ -35,7 +35,7 @@ const WinningModal: React.FC<WinningModalProps> = ({ isVisible, onClose, onPlayA
                     <p className='text-ffgray/70 font-bold'>Time: <span className='text-teal'>{formatTime(timeUsed)}</span></p>
                     <FFButton text="Play Again" className="md:w-5/6" onClick={handlePlayAgain} />
                     <FFButton text="Home" variant='outlined' className="md:w-5/6 border border-teal text-[#007880]"onClick={onGoHome}  />
-                    <p onClick={() => navigate("/leaderboard")} className='block text-teal text-sm font-bold'>Check Leaderboard</p>
+                    <button type='button' onClick={() => navigate("/leaderboard")} className='block w-max mx-auto text-teal text-sm font-bold'>Check Leaderboard</button>
                 </div>
             </div>
         </div>

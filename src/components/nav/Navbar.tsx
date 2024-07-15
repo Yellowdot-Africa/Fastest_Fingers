@@ -18,7 +18,9 @@ const Navbar: React.FC = () => {
 
   return (
     <nav className="flex justify-between items-center font-inria bg-white shadow pt-4 pb-2 px-16 lg:px-24">
-      <img src="/images/FFlogo.svg" alt="Logo" className="h-5" />
+      <NavLink  to="/">
+        <img src="/images/FFlogo.svg" alt="Logo" className=" h-5" />
+      </NavLink>
       <div className='flex gap-28 lg:gap-40 text-ffgray text-xs font-bold'>
         <div className='flex items-center gap-10'>
           {navData.map((item) => {

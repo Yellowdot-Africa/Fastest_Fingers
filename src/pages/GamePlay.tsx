@@ -15,27 +15,10 @@ const GamePlay: React.FC = () => {
         </div>
   
         <div className="w-full md:w-max mx-auto">
-          <img className="w-full md:w-max mx-auto" src="/images/prizes-won.svg" alt="prizes to be won" />
-          <div className="p-6 md:p-16 my-3 space-y-6 bg-[#F9F9F9] text-ffgray md:w-[520px] shadow md:text-xl font-bold">
-            <div className="flex items-center justify-between md:space-x-6">
-              <img src="/images/coins.svg" alt="coins image" />
-              <p className="w-full">First Prize(Cash)</p>
-              <p className="text-black">N100,000</p>
-            </div>
-            <div className="flex items-center justify-between md:space-x-6">
-              <img src="/images/coins.svg" alt="coins image" />
-              <p className="w-full">Second Prize(Cash)</p>
-              <p className="text-black">N50,000</p>
-            </div>
-            <div className="flex items-center justify-between md:space-x-6">
-              <img className="mx-4" src="/images/airtime.svg" alt="coins image" />
-              <p className="w-full">Airtime</p>
-              <p className="text-black">N10,000</p>
-            </div>
-          </div>
-  
+
+
           <div className="mx-auto text-center mt-10">
-            <p>PLAY TO WIN AMAZING PRIZES, NOW!</p>
+            <p>Coming Soon</p>
 
           </div>
         </div>

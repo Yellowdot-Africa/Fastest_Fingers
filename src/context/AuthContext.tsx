@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, ReactNode } from 'react';
+import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { UserProfile } from '../types';
 
 interface AuthContextType {
@@ -15,13 +15,22 @@ interface AuthContextType {
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-    const [token, setToken] = useState('');
-    const [msisdn, setMsisdn] = useState('');
-    const [profile, setProfile] = useState<UserProfile | null>(null);
-    const [isSubscribed, setIsSubscribed] = useState(false);
+    const [token, setToken] = useState<string>(() => sessionStorage.getItem('token') || '');
+    const [msisdn, setMsisdn] = useState<string>(() => sessionStorage.getItem('msisdn') || '');
+    const [profile, setProfile] = useState<UserProfile | null>(() => {
+        const profileData = sessionStorage.getItem('profile');
+        return profileData ? JSON.parse(profileData) : null;
+    });
+    const [isSubscribed, setIsSubscribed] = useState<boolean>(() => sessionStorage.getItem('isSubscribed') === 'true');
+
+    useEffect(() => {
+        sessionStorage.setItem('token', token);
+        sessionStorage.setItem('msisdn', msisdn);
+        sessionStorage.setItem('profile', JSON.stringify(profile));
+        sessionStorage.setItem('isSubscribed', isSubscribed.toString());
+    }, [token, msisdn, profile, isSubscribed]);
 
     const handleSetProfile = (profileData: Partial<UserProfile>) => {
-        // default state
         const completeProfile: UserProfile = {
             msisdn: profileData.msisdn || msisdn,
             nickname: profileData.nickname || '',
