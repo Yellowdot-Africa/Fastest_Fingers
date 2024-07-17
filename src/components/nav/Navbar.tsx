@@ -11,22 +11,20 @@ const Navbar: React.FC = () => {
   const location = useLocation();
 
   const toggleProfileModal = () => {
-    if (!isSubscribed) {
-      setProfileModalVisible(!isProfileModalVisible);
-    }
+    setProfileModalVisible(!isProfileModalVisible);
   };
 
   return (
     <nav className="flex justify-between items-center font-inria bg-white shadow pt-4 pb-2 px-16 lg:px-24">
-      <NavLink  to="/">
-        <img src="/images/FFlogo.svg" alt="Logo" className=" h-5" />
+      <NavLink to="/">
+        <img src="/images/FFlogo.svg" alt="Logo" className="h-5" />
       </NavLink>
       <div className='flex gap-28 lg:gap-40 text-ffgray text-xs font-bold'>
         <div className='flex items-center gap-10'>
           {navData.map((item) => {
             const isActive = location.pathname === item.to;
             return (
-              <NavLink 
+              <NavLink
                 key={item.to}
                 to={item.to}
                 className="flex flex-col items-center h-full justify-between"
@@ -38,15 +36,17 @@ const Navbar: React.FC = () => {
           })}
         </div>
         <div className="flex flex-col items-center justify-between cursor-pointer" onClick={toggleProfileModal}>
-          { isSubscribed ?
+          {isSubscribed &&
             <>
-              <ProfileIcon className=' h-6' />
+              <ProfileIcon className='h-6' />
               <span>Profile</span>
-            </> : ''
+            </>
           }
         </div>
       </div>
-      <ProfileModal isVisible={isProfileModalVisible} onClose={toggleProfileModal} />
+      {isSubscribed && (
+        <ProfileModal isVisible={isProfileModalVisible} onClose={toggleProfileModal} />
+      )}
     </nav>
   );
 };
