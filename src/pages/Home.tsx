@@ -3,10 +3,13 @@ import { useOutletContext } from 'react-router-dom';
 import FFButton from '../components/common/FFButton';
 import GamePlayModal from '../components/modals/GamePlayModal';
 import Play from '../components/Play';
+import { useAuth } from '../context/AuthContext';
 
 const Home: React.FC = () => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const { isPlaying, setIsPlaying } = useOutletContext<{ isPlaying: boolean; setIsPlaying: React.Dispatch<React.SetStateAction<boolean>> }>();
+  const { profile } = useAuth();
+  const nickname = profile?.nickname || '';
 
     const toggleModal = () => {
         setIsModalVisible(!isModalVisible);
@@ -28,7 +31,7 @@ const Home: React.FC = () => {
             <div className="">
               <img src="/images/hand-wave.svg" alt="hand wave" />
             </div>
-            <p className="md:text-2xl font-bold">Hello,</p>
+            <p className="md:text-2xl font-bold">Hello {nickname && `${nickname}`}</p>
           </div>
 
           <div className="w-full md:w-max mx-auto">
