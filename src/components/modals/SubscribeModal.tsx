@@ -14,10 +14,10 @@ const SubscribeModal: React.FC<ModalProps> = ({ isVisible, onClose }) => {
           <span className="">Subscribe to a plan to proceed</span>
           <label htmlFor="select" className="block mt-4 text-left text-xs text-ffgray/70">Select Subscription Plan</label>
           <select id="select" className="mb-4 mt-1 w-full py-3 px-4 border border-[#00F0FF] rounded-3xl">
-            <option value="20">N20/Day</option>
-            <option value="50">N50/Day</option>
-            <option value="100">N100/Day</option>
-            <option value="200">N200/Day</option>
+            <option value="0.5">GHC 0.50 /day</option>
+            <option value="3">GHC 3 /week</option>
+            {/* <option value="100">N100/Day</option>
+            <option value="200">N200/Day</option> */}
           </select>
           <p className='bg-[#9A000033] py-2 hidden italic'>Subscription request failed, Try later</p>
           <FFButton text="Subscribe Now" className="mt-6" />

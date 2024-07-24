@@ -16,7 +16,7 @@ const GamePlayModal: React.FC<ModalProps> = ({ isVisible, onClose, onConfirm }) 
           <div className='mt-5 space-y-2'>
             <div className='flex items-center gap-3 text-left'>
                 <img src="/icons/pointer.svg" alt="list pointer" />
-                <p>Find the letters of the text <b>“WORD”</b> </p>
+                <p>Arrange the letters to make the corrrect <b>“WORD”</b> </p>
             </div>
             <div className='flex items-center gap-3 text-left'>
                 <img src="/icons/pointer.svg" alt="list pointer" />

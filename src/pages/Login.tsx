@@ -55,7 +55,8 @@ const Login: React.FC = () => {
             setError('Failed to retrieve token');
         }
     } catch (error) {
-        setError((error as Error).message || 'Login failed');
+        setError('Hello, You are currently not subscribed to Fastest Finger.');
+        // setError((error as Error).message || 'Login failed');
         console.error('Login error:', error);
     }
     setIsLoading(false);

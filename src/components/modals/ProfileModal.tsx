@@ -68,10 +68,8 @@ const ProfileModal: React.FC<ProfileModalProps> = ({ isVisible, onClose }) => {
         <p>Please fill the form below to complete profile</p>
       </div>
       <form action="">
-        <TextInput id="firstName" type="text" label="First name" />
-        <TextInput id="lastName" type="text" label="Last name" />
-        <TextInput id="email" type="email" label="Email" />
-        <TextInput id="nickname" type="text" label="Nick name" value={nickname} onChange={(e) => setNickname(e.target.value)} />
+        <TextInput id="phoneNumber" type="text" label="Phone Number" value={msisdn} readOnly />
+        <TextInput id="nickname" type="text" label="Nickname" value={nickname} onChange={(e) => setNickname(e.target.value)} />
         <FFButton text="Submit" onClick={handleSave} disabled={loading} />
         {confirmText && <p className="text-teal text-center">{confirmText}</p>}
       </form>

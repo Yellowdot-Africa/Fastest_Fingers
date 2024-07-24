@@ -10,7 +10,7 @@ interface WinningModalProps extends ModalProps {
     onGoHome: () => void;
 }
 
-const WinningModal: React.FC<WinningModalProps> = ({ isVisible, onClose, onPlayAgain, onGoHome, timeUsed, message }) => {
+const WinningModal: React.FC<WinningModalProps> = ({ isVisible, onPlayAgain, onGoHome, timeUsed, message }) => {
     const navigate = useNavigate();
     if (!isVisible) return null;
 
@@ -29,7 +29,7 @@ const WinningModal: React.FC<WinningModalProps> = ({ isVisible, onClose, onPlayA
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
             <div className="bg-white p-8 py-14 rounded shadow-lg relative md:w-[444px] mx-6">
                 <div className="mx-auto text-center text-ffgray relative">
-                    <button onClick={onClose} className="absolute font-light -top-1 right-14 text-2xl">×</button>
+                    {/* <button onClick={onClose} className="absolute font-light -top-1 right-14 text-2xl">×</button> */}
                     <span>Congratulations</span>
                     <p className="my-3 text-center italic">{message}</p>
                     <p className='text-ffgray/70 font-bold'>Time: <span className='text-teal'>{formatTime(timeUsed)}</span></p>
@@ -43,4 +43,3 @@ const WinningModal: React.FC<WinningModalProps> = ({ isVisible, onClose, onPlayA
 };
 
 export default WinningModal;
-

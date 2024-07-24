@@ -27,12 +27,13 @@ const Play: React.FC<{ onClose: () => void }> = ({ onClose }) => {
     const [selectedLetters, setSelectedLetters] = useState<string[]>([]);
     const [availableLetters, setAvailableLetters] = useState<string[]>([]);
     const [selectedIndices, setSelectedIndices] = useState<number[]>([]);
-    const [timer, setTimer] = useState(600);
+    const [timer, setTimer] = useState(15);
     const [showWinningModal, setShowWinningModal] = useState(false);
     const [question, setQuestion] = useState<GameQuestion | null>(null);
     const [timeUsed, setTimeUsed] = useState<number>(0);
     const [isLoading, setIsLoading] = useState(false);
     const [modalMessage, setModalMessage] = useState('');
+    const [hintUsed, setHintUsed] = useState<boolean>(false);
     const { token, msisdn } = useAuth();
 
     useEffect(() => {
@@ -41,6 +42,7 @@ const Play: React.FC<{ onClose: () => void }> = ({ onClose }) => {
                 setTimer(timer - 1);
             } else {
                 clearInterval(countdown);
+                handleTimeOut(); // Submit the game when the timer runs out
             }
         }, 1000);
 
@@ -105,21 +107,30 @@ const Play: React.FC<{ onClose: () => void }> = ({ onClose }) => {
             setSelectedLetters(Array(question?.text.length || 0).fill(''));
             setSelectedIndices([]);
         } else {
-            setIsLoading(true);
-            setTimeUsed(600 - timer); // Calculate time used
-            if (question && msisdn) {
-                const submittedAnswer = selectedLetters.join('').toLowerCase();
-                const response = await submitGamePlay(msisdn, question.id, submittedAnswer, false, timeUsed, token);
-                if (response && response.statusCode === "999") {
-                    setModalMessage(response.message);
-                    setShowWinningModal(true);
-                } else {
-                    setModalMessage("Oops, Seems something went wrong.");
-                    setShowWinningModal(true);
-                }
-            }
-            setIsLoading(false);
+            await submitGame();
         }
+    };
+
+    const submitGame = async () => {
+        setIsLoading(true);
+        setTimeUsed(15 - timer); // Calculate time used
+        if (question && msisdn) {
+            const submittedAnswer = selectedLetters.join('').toLowerCase();
+            const response = await submitGamePlay(msisdn, question.id, submittedAnswer, hintUsed, timeUsed, token);
+            if (response && response.statusCode === "999") {
+                setModalMessage(response.message);
+                setShowWinningModal(true);
+            } else {
+                setModalMessage("Oops, Seems something went wrong.");
+                setShowWinningModal(true);
+            }
+        }
+        setIsLoading(false);
+    };
+
+    const handleTimeOut = async () => {
+        setModalMessage("Your time is up. 0 points awarded!");
+        setShowWinningModal(true);
     };
 
     const resetGame = async () => {
@@ -130,11 +141,13 @@ const Play: React.FC<{ onClose: () => void }> = ({ onClose }) => {
                 setAvailableLetters(generateAvailableLetters(data.data[0].text));
                 setSelectedLetters(Array(data.data[0].text.length).fill(''));
                 setSelectedIndices([]);
-                setTimer(600);
+                setTimer(15);
                 setShowWinningModal(false);
+                setHintUsed(false);
             }
         }
     };
+
     const handleGoHome = () => {
         onClose();
     };
@@ -160,6 +173,17 @@ const Play: React.FC<{ onClose: () => void }> = ({ onClose }) => {
                                     <p key={index} className='p-2.5 shadow-dark bg-teal rounded text-center capitalize text-white font-bold'>{letter}</p>
                                 ))}
                             </div>
+                        </div>
+                        
+                        <div className="mb-4 text-sm flex gap-2 px-4 sm:px-10">
+                            <button
+                                className="bg-[#53d3dd] text-white p-2 rounded-lg"
+                                onClick={() => setHintUsed(true)}
+                            >
+                                Show Hint
+                            </button>
+                            {hintUsed && <p className="text-teal mt-2">{question?.hint}</p>}
+
                         </div>
 
                         <div className='bg-[#002B2DB2] p-6 rounded-[20px]'>
