@@ -177,7 +177,7 @@ const Play: React.FC<{ onClose: () => void }> = ({ onClose }) => {
                         
                         <div className="mb-4 text-sm flex gap-2 px-4 sm:px-10">
                             <button
-                                className="bg-[#53d3dd] text-white p-2 rounded-lg"
+                                className="bg-[#002B2DB2] text-white p-2 rounded-lg"
                                 onClick={() => setHintUsed(true)}
                             >
                                 Show Hint

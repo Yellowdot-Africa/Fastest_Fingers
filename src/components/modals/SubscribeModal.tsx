@@ -14,8 +14,8 @@ const SubscribeModal: React.FC<ModalProps> = ({ isVisible, onClose }) => {
           <span className="">Subscribe to a plan to proceed</span>
           <label htmlFor="select" className="block mt-4 text-left text-xs text-ffgray/70">Select Subscription Plan</label>
           <select id="select" className="mb-4 mt-1 w-full py-3 px-4 border border-[#00F0FF] rounded-3xl">
-            <option value="0.5">GHC 0.50 /day</option>
-            <option value="3">GHC 3 /week</option>
+            <option value="0.5">GH¢ 0.50 /day</option>
+            <option value="3">GH¢ 3 /week</option>
             {/* <option value="100">N100/Day</option>
             <option value="200">N200/Day</option> */}
           </select>

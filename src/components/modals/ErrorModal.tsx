@@ -9,7 +9,7 @@ const ErrorModal: React.FC<ModalProps> = ({ isVisible, message, onClose }) => {
   if (!isVisible) return null;
 
   const handleGotItClick = () => {
-    if (message && (message.includes("400") || message.toLowerCase().includes("no active subscription"))) {
+    if (message && (message.includes("400") || message.toLowerCase().includes("currently not subscribed to fastest finger"))) {
         navigate("/subscribe");
     } else {
         onClose();

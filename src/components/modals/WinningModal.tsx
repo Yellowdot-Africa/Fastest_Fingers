@@ -27,11 +27,11 @@ const WinningModal: React.FC<WinningModalProps> = ({ isVisible, onPlayAgain, onG
 
     return (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-            <div className="bg-white p-8 py-14 rounded shadow-lg relative md:w-[444px] mx-6">
+            <div className="bg-white p-8 py-10 rounded shadow-lg relative md:w-[444px] mx-6">
                 <div className="mx-auto text-center text-ffgray relative">
                     {/* <button onClick={onClose} className="absolute font-light -top-1 right-14 text-2xl">×</button> */}
-                    <span>Congratulations</span>
-                    <p className="my-3 text-center italic">{message}</p>
+
+                    <p className="mb-3 text-center italic text-lg">{message}</p>
                     <p className='text-ffgray/70 font-bold'>Time: <span className='text-teal'>{formatTime(timeUsed)}</span></p>
                     <FFButton text="Play Again" className="md:w-5/6" onClick={handlePlayAgain} />
                     <FFButton text="Home" variant='outlined' className="md:w-5/6 border border-teal text-[#007880]"onClick={onGoHome}  />

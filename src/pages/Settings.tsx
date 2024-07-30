@@ -43,7 +43,7 @@ interface SubscriptionEntry {
 
     const subscriptionData: SubscriptionEntry[] = Array.from({ length: 50 }, (_, i) => ({
         id: i + 1,
-        plan: "N20/Day",
+        plan: "GH¢0.50/day",
         date: "02/07/2024"
     }));
     const [currentPage, setCurrentPage] = useState(1);

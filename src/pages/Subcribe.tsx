@@ -26,17 +26,17 @@ const Subscribe: React.FC = () => {
             <div className="flex items-center justify-between md:space-x-6">
               <img src="/images/coins.svg" alt="coins image" />
               <p className="w-full">First Prize(Cash)</p>
-              <p className="text-black">N100,000</p>
+              <p className="text-black">GH¢1.000</p>
             </div>
             <div className="flex items-center justify-between md:space-x-6">
               <img src="/images/coins.svg" alt="coins image" />
               <p className="w-full">Second Prize(Cash)</p>
-              <p className="text-black">N50,000</p>
+              <p className="text-black">GH¢3.00</p>
             </div>
             <div className="flex items-center justify-between md:space-x-6">
               <img className="mx-4" src="/images/airtime.svg" alt="coins image" />
               <p className="w-full">Airtime</p>
-              <p className="text-black">N10,000</p>
+              <p className="text-black">GH¢0.00</p>
             </div>
           </div>
   

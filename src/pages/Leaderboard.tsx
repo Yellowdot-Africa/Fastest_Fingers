@@ -13,17 +13,17 @@ const Leaderboard: React.FC = () => {
     const [leaderboardData, setLeaderboardData] = useState<LeaderboardEntry[]>([]);
     const [error, setError] = useState<string>('');
 
-    const monthNames = [
-        'January', 'February', 'March', 'April', 'May', 'June',
-        'July', 'August', 'September', 'October', 'November', 'December'
-    ];
+    // const monthNames = [
+    //     'January', 'February', 'March', 'April', 'May', 'June',
+    //     'July', 'August', 'September', 'October', 'November', 'December'
+    // ];
 
-    const getCurrentMonth = () => {
-        const currentDate = new Date();
-        return monthNames[currentDate.getMonth()];
-    };
+    // const getCurrentMonth = () => {
+    //     const currentDate = new Date();
+    //     return monthNames[currentDate.getMonth()];
+    // };
 
-    const [selectedMonth, setSelectedMonth] = useState<string>(getCurrentMonth());
+    // const [selectedMonth, setSelectedMonth] = useState<string>(getCurrentMonth());
 
     useEffect(() => {
         const fetchData = async () => {
@@ -56,7 +56,7 @@ const Leaderboard: React.FC = () => {
                     <h1 className="">Leaderboard</h1>
                 </div>
 
-                <select
+                {/* <select
                     className="py-2 px-0 cursor-pointer text-teal font-bold md:text-lg"
                     name='selectedMonth'
                     title='selectedMonth'
@@ -66,7 +66,7 @@ const Leaderboard: React.FC = () => {
                     {monthNames.map((month, index) => (
                         <option key={index} value={month}>{month}</option>
                     ))}
-                </select>
+                </select> */}
             </div>
             {leaderboardData.length === 0 ? (
                 <div className='text-center mt-10'>
@@ -87,7 +87,7 @@ const Leaderboard: React.FC = () => {
                         ))}
                     </div>
                     <div className='mt-32'>
-                        <div className="text-center bg-teal/20 p-2 w-max mx-auto text-lg mb-8">Top 3 Performers for {selectedMonth}</div>
+                        <div className="text-center bg-teal/20 p-2 w-max mx-auto text-lg mb-8">Top 3 Performers </div>
                         {leaderboardData.slice(3).map((entry, index) => (
                             <div key={index} className="flex justify-between items-center my-6 mt-10">
                                 <div className='md:text-xl italic'>{entry.position}. {entry.msisdn}</div>
