@@ -15,7 +15,7 @@ const Login: React.FC = () => {
   const { setToken, setMsisdn, setProfile, setIsSubscribed } = useAuth();
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const allowedCountries: CustomCountryCode[] = ['NG', 'CM', 'GH', 'BJ', 'ZA'];
+  const allowedCountries: CustomCountryCode[] = ['NG', 'CM', 'GH', 'CI', 'BJ', 'ZA'];
 
   const handleLogin = async () => {
     if (!value || !isPossiblePhoneNumber(value)) {

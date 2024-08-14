@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import WinningModal from './modals/WinningModal';
 import { fetchGameQuestions, submitGamePlay } from '../api/apiService';
 import { useAuth } from '../context/AuthContext';
@@ -13,6 +13,7 @@ interface GameQuestion {
 }
 
 const Play: React.FC<{ onClose: () => void }> = ({ onClose }) => {
+    const countdownRef = useRef<number>(0);
     const [error, setError] = useState<string | null>(null);
     const [loading, setLoading] = useState<boolean>(false);
     const getRandomLetter = () => String.fromCharCode(65 + Math.floor(Math.random() * 26));
@@ -37,17 +38,18 @@ const Play: React.FC<{ onClose: () => void }> = ({ onClose }) => {
     const { token, msisdn } = useAuth();
 
     useEffect(() => {
-        const countdown = setInterval(() => {
+        countdownRef.current = setInterval(() => {
             if (timer > 0) {
                 setTimer(timer - 1);
             } else {
-                clearInterval(countdown);
+                clearInterval(countdownRef.current);
                 handleTimeOut(); // Submit the game when the timer runs out
             }
         }, 1000);
-
-        return () => clearInterval(countdown);
+    
+        return () => clearInterval(countdownRef.current);
     }, [timer]);
+
 
     useEffect(() => {
         const getQuestions = async () => {
@@ -107,6 +109,7 @@ const Play: React.FC<{ onClose: () => void }> = ({ onClose }) => {
             setSelectedLetters(Array(question?.text.length || 0).fill(''));
             setSelectedIndices([]);
         } else {
+            clearInterval(countdownRef.current); // Stop the timer before submission
             await submitGame();
         }
     };
