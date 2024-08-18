@@ -20,3 +20,12 @@ export interface UserProfile {
     accountNumber: string;
     accountName: string;
 }
+export interface Prize {
+    type: string;
+    currency: string;
+    amount: number;
+  }
+
+export interface PrizeResponse {
+    data: Prize[];
+}

@@ -20,7 +20,6 @@ const FFButton: React.FC<FFButtonProps> = ({
   onClick
 }) => {
 
-  // Define style based on disabled state and variant
   const style = {
     backgroundColor: disabled ? '#CCCCCC' : (variant === 'filled' ? bgColor : 'transparent'),
   };

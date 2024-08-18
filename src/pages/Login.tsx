@@ -7,6 +7,7 @@ import { CustomCountryCode } from '../types';
 import { useAuth } from '../context/AuthContext';
 import { checkSubscriptionStatus, getUserProfile, loginUser } from '../api/apiService';
 import { useNavigate } from 'react-router-dom';
+import { getCountryAlpha2Code } from '../utils/getCountryAlpha2Code';
 
 const Login: React.FC = () => {
   const [value, setValue] = useState<string>();
@@ -19,48 +20,58 @@ const Login: React.FC = () => {
 
   const handleLogin = async () => {
     if (!value || !isPossiblePhoneNumber(value)) {
-        setError('Please enter a valid phone number');
-        return;
+      setError('Please enter a valid phone number');
+      return;
     }
     setIsLoading(true);
     const cleanMsisdn = value.replace('+', '');
-    try {
-        const subscriptionStatus = await checkSubscriptionStatus(cleanMsisdn, 1);
-        if (subscriptionStatus.statusCode !== '999') {
-          console.error('sub error:', subscriptionStatus.statusCode )
-            setIsSubscribed(false);
-            setError(subscriptionStatus.message || 'Subscription check failed. Please try again.');
-            setIsLoading(false);
-            return;
-        }
-        const token = await loginUser("fastest_fingers_gh", "password");
-        if (token) {
-            setToken(token);
-            setMsisdn(cleanMsisdn);
-            setIsSubscribed(true);
 
-            try {
-              const profileData = await getUserProfile(cleanMsisdn, token);
-              setProfile(profileData?.data || { msisdn: cleanMsisdn });
-            } catch (profileError) {
-              console.warn('User profile not found or error fetching:', profileError);
-              setProfile({ msisdn: cleanMsisdn });
-            }
-            setShowPopup(true);
-            setTimeout(() => {
-                setShowPopup(false);
-                navigate("/");
-            }, 1000);
-        } else {
-            setError('Failed to retrieve token');
+    const countryAlpha2Code = getCountryAlpha2Code(cleanMsisdn, allowedCountries);
+    if (!countryAlpha2Code) {
+      setError('Service not available in your location or invalid number.');
+      setIsLoading(false);
+      return;
+    }
+
+    try {
+      const subscriptionStatus = await checkSubscriptionStatus(cleanMsisdn, 1);
+      if (subscriptionStatus.statusCode !== '999') {
+        console.error('sub error:', subscriptionStatus.statusCode);
+        setIsSubscribed(false);
+        setError(subscriptionStatus.message || 'Subscription check failed. Please try again.');
+        setIsLoading(false);
+        return;
+      }
+
+      const token = await loginUser("fastest_fingers_gh", "password");
+      if (!token) {
+        throw new Error('Login failed: Unable to retrieve access token.');
+      }
+
+        setToken(token);
+        setMsisdn(cleanMsisdn);
+        setIsSubscribed(true);
+  
+        try {
+          const profileData = await getUserProfile(cleanMsisdn, token);
+          setProfile(profileData?.data || { msisdn: cleanMsisdn });
+        } catch (profileError) {
+          console.warn('User profile not found or error fetching:', profileError);
+          setProfile({ msisdn: cleanMsisdn });
         }
+        setShowPopup(true);
+        setTimeout(() => {
+          setShowPopup(false);
+          navigate("/");
+        }, 1000);
+
     } catch (error) {
-        setError('Hello, You are currently not subscribed to Fastest Finger.');
-        // setError((error as Error).message || 'Login failed');
-        console.error('Login error:', error);
+      // setError('Hello, You are currently not subscribed to Fastest Finger.');
+        setError((error as Error).message || 'Login failed: Please check your credentials or subscribe.');
+      console.error('Login error:', error);
     }
     setIsLoading(false);
-  }
+  };
 
   const closeErrorModal = () => setError(null);
 
