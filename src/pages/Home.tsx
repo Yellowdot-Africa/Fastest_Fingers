@@ -65,7 +65,7 @@ const Home: React.FC = () => {
                 <p>Loading Prizes ....</p>
               </div>
             ) : error ? (
-              <div className="p-6 md:p-16 my-3 bg-[#F9F9F9]  md:w-[520px] shadow md:text-xl font-bold text-red-500">
+              <div className="p-6 md:p-16 my-3 bg-[#F9F9F9] text-center  md:w-[520px] shadow md:text-xl font-bold text-red-500">
                 {error}
               </div>
             ) : (

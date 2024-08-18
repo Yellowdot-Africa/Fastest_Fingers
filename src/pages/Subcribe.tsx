@@ -50,7 +50,7 @@ const Subscribe: React.FC = () => {
             <p>Loading Prizes ....</p>
           </div>
         ) : error ? (
-          <div className="p-6 md:p-16 my-3 bg-[#F9F9F9]  md:w-[520px] shadow md:text-xl font-bold text-red-500">
+          <div className="p-6 md:p-16 my-3 bg-[#F9F9F9]  md:w-[520px] text-center shadow md:text-xl font-bold text-red-500">
             {error}
           </div>
         ) : (

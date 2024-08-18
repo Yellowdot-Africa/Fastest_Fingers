@@ -2,15 +2,16 @@ import { Prize, PrizeResponse, UserProfile } from "../types";
 // const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 const baseUrl = "https://ydvassdp.com:2001"
 
-const handleError = (error:any) => {
+const handleError = (error: any) => {
     if (error.message.includes('No active Subscription')) {
-        return "Hello, You are currently not subscribed to Fastest Finger";
-    }else if (error.message.includes('Failed to fetch')) {
+        return "Hello, You are currently not subscribed to Fastest Finger.";
+    } else if (error instanceof TypeError &&
+               (error.message === "Failed to fetch" || error.message.toLowerCase().includes("load fail"))) {
         return "We're having trouble connecting to our servers. Please check your internet connection or try again later.";
     } else {
-      return error.message;
+        return error.message;
     }
-  }
+}
 
 // Function to login and fetch token
 export async function loginUser(username: string, password: string): Promise<string | null> {
@@ -31,7 +32,8 @@ export async function loginUser(username: string, password: string): Promise<str
         return data.jwtToken;
     } catch (error) {
         console.error('Login error:', error);
-        if (error instanceof TypeError && error.message === "Failed to fetch") {
+        if (error instanceof TypeError &&
+            (error.message === "Failed to fetch" || error.message.toLowerCase().includes("load fail"))) {
             throw new Error("We're having trouble connecting to our servers. Please try again later.");
         }
         throw error;
@@ -221,7 +223,8 @@ export async function fetchPrizesByCountry(countryAlpha2Code: string): Promise<P
     } catch (error) {
         console.error('Error fetching prizes:', error);
 
-        if (error instanceof TypeError && error.message === "Failed to fetch") {
+        if (error instanceof TypeError &&
+            (error.message === "Failed to fetch" || error.message.toLowerCase().includes("load fail"))) {
             throw new Error("Failed to fetch prizes: Please try refreshing the page or check back later.");
         }
         throw error;
