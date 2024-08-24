@@ -1,16 +1,16 @@
-import React, { useState, useEffect } from 'react';
-import TextInput from '../components/common/TextInput';
-import { useAuth } from '../context/AuthContext';
+import React, { useState } from 'react';
+// import TextInput from '../components/common/TextInput';
+// import { useAuth } from '../context/AuthContext';
 // import { getUserProfile, saveUserProfile } from '../api/apiService';
-import { UserProfile } from '../types';
-import ErrorModal from '../components/modals/ErrorModal';
-import { saveUserProfile } from '../api/apiService';
+// import { UserProfile } from '../types';
+// import ErrorModal from '../components/modals/ErrorModal';
+// import { saveUserProfile } from '../api/apiService';
 
-interface BankInfo {
-    accountName: string;
-    accountNumber: string;
-    bank: string;
-}
+// interface BankInfo {
+//     accountName: string;
+//     accountNumber: string;
+//     bank: string;
+// }
 
 interface SubscriptionEntry {
     id: number;
@@ -19,27 +19,27 @@ interface SubscriptionEntry {
 }
 
   const Settings: React.FC = () => {
-    const { token, msisdn, profile, setProfile } = useAuth();
+    // const { token, msisdn, profile, setProfile } = useAuth();
     // console.log(msisdn)
     const [openSection, setOpenSection] = useState<string>('');
-    const [isEditing, setIsEditing] = useState(false);
-    const [loading, setLoading] = useState(false);
-    const [confirmText, setConfirmText] = useState(' ');
-    const [error, setError] = useState<string>('');
-    const [bankInfo, setBankInfo] = useState<BankInfo>({
-        accountName: '',
-        accountNumber: '',
-        bank: ''
-    });
-    useEffect(() => {
-      if (profile) {
-          setBankInfo({
-              accountName: profile.accountName,
-              accountNumber: profile.accountNumber,
-              bank: profile.bank
-          });
-      }
-  }, [profile]);
+  //   const [isEditing, setIsEditing] = useState(false);
+  //   const [loading, setLoading] = useState(false);
+  //   const [confirmText, setConfirmText] = useState(' ');
+  //   const [error, setError] = useState<string>('');
+  //   const [bankInfo, setBankInfo] = useState<BankInfo>({
+  //       accountName: '',
+  //       accountNumber: '',
+  //       bank: ''
+  //   });
+  //   useEffect(() => {
+  //     if (profile) {
+  //         setBankInfo({
+  //             accountName: profile.accountName,
+  //             accountNumber: profile.accountNumber,
+  //             bank: profile.bank
+  //         });
+  //     }
+  // }, [profile]);
 
     const subscriptionData: SubscriptionEntry[] = Array.from({ length: 50 }, (_, i) => ({
         id: i + 1,
@@ -55,50 +55,50 @@ interface SubscriptionEntry {
 
   const toggleSection = (section: string) => {
     setOpenSection(openSection === section ? '' : section);
-    setIsEditing(false);
+    // setIsEditing(false);
   };
 
-  const handleEditClick = () => {
-    setIsEditing(!isEditing);
-  };
+  // const handleEditClick = () => {
+  //   setIsEditing(!isEditing);
+  // };
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-    setBankInfo({ ...bankInfo, [e.target.name]: e.target.value });
-  };
-  const saveBankInfo = async () => {
-    setLoading(true);
-    setConfirmText('confirming...');
-    // To Ensure the profile is defined and contains the current data to be saved.
-    const updatedProfile: UserProfile = {
-      msisdn,
-      nickname: profile?.nickname || 'player123',
-      avatar: profile?.avatar || 1,
-      bank: bankInfo.bank,
-      accountNumber: bankInfo.accountNumber,
-      accountName: bankInfo.accountName
-    };
+  // const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+  //   setBankInfo({ ...bankInfo, [e.target.name]: e.target.value });
+  // };
+  // const saveBankInfo = async () => {
+  //   setLoading(true);
+  //   setConfirmText('confirming...');
+  //   // To Ensure the profile is defined and contains the current data to be saved.
+  //   const updatedProfile: UserProfile = {
+  //     msisdn,
+  //     nickname: profile?.nickname || 'player123',
+  //     avatar: profile?.avatar || 1,
+  //     bank: bankInfo.bank,
+  //     accountNumber: bankInfo.accountNumber,
+  //     accountName: bankInfo.accountName
+  //   };
 
-    try {
-        const response = await saveUserProfile(updatedProfile, token);
-        if (response && response.statusCode === '999') {
-            setConfirmText('confirmed');
-            setTimeout(() => {
-                setConfirmText('');
-                setIsEditing(false);
-            }, 1000);
-            setProfile(updatedProfile);
-        } else {
-            setError('Bank details could not be saved.');
-        }
-    } catch (error) {
-        setError('Bank details could not be saved.');
-        console.error('Error saving user profile:', error);
-    }
-    setLoading(false);
-  };
-    const closeErrorModal = () => {
-        setError('');
-    };
+  //   try {
+  //       const response = await saveUserProfile(updatedProfile, token);
+  //       if (response && response.statusCode === '999') {
+  //           setConfirmText('confirmed');
+  //           setTimeout(() => {
+  //               setConfirmText('');
+  //               setIsEditing(false);
+  //           }, 1000);
+  //           setProfile(updatedProfile);
+  //       } else {
+  //           setError('Bank details could not be saved.');
+  //       }
+  //   } catch (error) {
+  //       setError('Bank details could not be saved.');
+  //       console.error('Error saving user profile:', error);
+  //   }
+  //   setLoading(false);
+  // };
+  //   const closeErrorModal = () => {
+  //       setError('');
+  //   };
 
   return (
     <div>
@@ -107,7 +107,7 @@ interface SubscriptionEntry {
         <h1 className="text-lg">Setting</h1>
       </div>
       <div className="max-w-3xl md:mx-auto py-6 pb-40 rounded-lg bg-[#F9F9F9] shadow-custom my-8 md:my-16 mx-4">
-        <div className="mb-4 md:w-3/5 mx-auto">
+        {/* <div className="mb-4 md:w-3/5 mx-auto">
           <button
             className="w-full flex justify-between items-center p-4 bg-[#F9F9F9] rounded-md border-b text-ffgray/80"
             onClick={() => toggleSection('bankInfo')}
@@ -167,7 +167,7 @@ interface SubscriptionEntry {
               )}
             </div>
           )}
-        </div>
+        </div> */}
         <div className='md:w-3/5 mx-auto'>
           <button
             className="w-full flex justify-between items-center p-4 bg-[#F9F9F9] rounded-md border-b text-ffgray/80"
@@ -190,7 +190,7 @@ interface SubscriptionEntry {
                   <span className='text-teal'>{entry.date}</span>
                 </div>
               ))}
-              <p className='text-teal text-center font-bold my-4'>clear</p>
+   
               <div className="flex justify-between items-center mt-4">
                 <button className='text-teal font-bold' onClick={() => setCurrentPage(currentPage - 1)} disabled={currentPage === 1}>Previous</button>
                 <span>{currentPage}/{totalPages}</span>
@@ -200,7 +200,7 @@ interface SubscriptionEntry {
           )}
         </div>
       </div>
-      <ErrorModal isVisible={!!error} message={error} onClose={closeErrorModal} />
+      {/* <ErrorModal isVisible={!!error} message={error} onClose={closeErrorModal} /> */}
     </div>
   );
 };

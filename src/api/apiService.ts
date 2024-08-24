@@ -1,6 +1,6 @@
 import { Prize, PrizeResponse, UserProfile } from "../types";
 // const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
-const baseUrl = "https://ydvassdp.com:2001"
+const baseUrl = "http://ydvassdp.com:2002"
 
 const handleError = (error: any) => {
     if (error.message.includes('No active Subscription')) {
@@ -29,6 +29,7 @@ export async function loginUser(username: string, password: string): Promise<str
         }
 
         const data = await response.json();
+        // console.log('Login response data:', data);
         return data.jwtToken;
     } catch (error) {
         console.error('Login error:', error);
@@ -178,7 +179,7 @@ export async function fetchLeaderboard(msisdn: string, token: string): Promise<a
 
 // Function to check subscription status
 export async function checkSubscriptionStatus(msisdn: string, productId: number): Promise<{ statusCode: string; message: string; }> {
-    const url = `https://ydvassdp.com:6001/api/DataSync/Subscription/CheckSubscriptionStatus?msisdn=${msisdn}&productId=${productId}`;
+    const url = `http://ydvassdp.com:6002/api/DataSync/Subscription/CheckSubscriptionStatus?msisdn=${msisdn}&productId=${productId}`;
 
     try {
         const response = await fetch(url, {

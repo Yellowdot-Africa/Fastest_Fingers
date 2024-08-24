@@ -6,6 +6,7 @@ import ErrorModal from '../components/modals/ErrorModal';
 interface LeaderboardEntry {
     msisdn: string;
     position: number;
+    points: number;
 }
 
 const Leaderboard: React.FC = () => {
@@ -82,7 +83,7 @@ const Leaderboard: React.FC = () => {
                                     <img src={`/images/medal${entry.position}.svg`} alt={`Medal ${entry.position}`} className="mx-auto" />
                                 </div>
                                 <div className="md:text-xl italic">{entry.msisdn}</div>
-                                <div className="text-teal font-bold">{entry.position}</div>
+                                <div className="text-teal font-bold">{entry.points}</div>
                             </div>
                         ))}
                     </div>
@@ -91,7 +92,7 @@ const Leaderboard: React.FC = () => {
                         {leaderboardData.slice(3).map((entry, index) => (
                             <div key={index} className="flex justify-between items-center my-6 mt-10">
                                 <div className='md:text-xl italic'>{entry.position}. {entry.msisdn}</div>
-                                <div className='text-teal font-bold'>{entry.position}</div>
+                                <div className='text-teal font-bold'>{entry.points}</div>
                             </div>
                         ))}
                     </div>
