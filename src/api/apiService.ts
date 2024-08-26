@@ -1,9 +1,11 @@
 import { Prize, PrizeResponse, UserProfile } from "../types";
-// const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
-const baseUrl = "http://ydvassdp.com:2002"
 
+const API_BASE_URL_2002 = "http://ydvassdp.com:2002";
+const API_BASE_URL_6002 = "http://ydvassdp.com:6002";
+
+// error handler
 const handleError = (error: any) => {
-    if (error.message.includes('No active Subscription')) {
+    if (error.message.includes('No Active Subscription')) {
         return "Hello, You are currently not subscribed to Fastest Finger.";
     } else if (error instanceof TypeError &&
                (error.message === "Failed to fetch" || error.message.toLowerCase().includes("load fail"))) {
@@ -12,224 +14,134 @@ const handleError = (error: any) => {
         return error.message;
     }
 }
+async function apiRequest<T>(
+  baseUrl: string,
+  endpoint: string,
+  method: 'GET' | 'POST',
+  token: string | null = null,
+  body: any = null
+): Promise<T> {
+  const url = `${baseUrl}${endpoint}`;
+  const headers: Record<string, string> = {
+    'Content-Type': 'application/json',
+  };
 
-// Function to login and fetch token
+  if (token) {
+    headers['Authorization'] = `Bearer ${token}`;
+  }
+
+  try {
+    const response = await fetch(url, {
+      method,
+      headers,
+      body: body ? JSON.stringify(body) : null,
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.message || `${response.status} ${response.statusText}`);
+    }
+
+    return await response.json();
+  } catch (error) {
+    throw new Error(handleError(error));
+  }
+}
+
+
+
+// Login User
 export async function loginUser(username: string, password: string): Promise<string | null> {
-    const url = `${baseUrl}/api/FastestFingers/Authorization/Login`;
-
-    try {
-        const response = await fetch(url, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ username, password })
-        });
-
-        if (!response.ok) {
-            throw new Error(`Failed to login: ${response.status} ${response.statusText}`);
-        }
-
-        const data = await response.json();
-        // console.log('Login response data:', data);
-        return data.jwtToken;
-    } catch (error) {
-        console.error('Login error:', error);
-        if (error instanceof TypeError &&
-            (error.message === "Failed to fetch" || error.message.toLowerCase().includes("load fail"))) {
-            throw new Error("We're having trouble connecting to our servers. Please try again later.");
-        }
-        throw error;
-    }
+  return apiRequest<{ jwtToken: string }>(
+    API_BASE_URL_2002,
+    '/api/FastestFingers/Authorization/Login',
+    'POST',
+    null,
+    { username, password }
+  ).then(data => data.jwtToken);
 }
-// Function to fetch game questions
+
+// Fetch Game Questions
 export async function fetchGameQuestions(count: number, token: string): Promise<any> {
-    const url = `${baseUrl}/api/FastestFingers/GamePlay/GetGameQuestions?count=${count}`;
-
-    try {
-        const response = await fetch(url, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`
-            }
-        });
-
-        if (!response.ok) {
-            throw new Error(`Failed to fetch questions: ${response.status} ${response.statusText}`);
-        }
-
-        const data = await response.json();
-        return data;
-    } catch (error) {
-        console.error('Error fetching questions:', error);
-        throw error;
-    }
+  return apiRequest<any>(
+    API_BASE_URL_2002,
+    `/api/FastestFingers/GamePlay/GetGameQuestions?count=${count}`,
+    'GET',
+    token
+  );
 }
 
+// Submit Game Play
 export async function submitGamePlay(
-    msisdn: string,
-    questionId: number,
-    submittedAnswer: string,
-    isHintUsed: boolean,
-    gameDuration: number,
-    token: string
+  msisdn: string,
+  questionId: number,
+  submittedAnswer: string,
+  isHintUsed: boolean,
+  gameDuration: number,
+  token: string
 ): Promise<{ statusCode: string; statusMessage: string; message: string; } | null> {
-    const url = `${baseUrl}/api/FastestFingers/GamePlay/SubmitGamePlay`;
-
-    try {
-        const response = await fetch(url, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`
-            },
-            body: JSON.stringify({
-                msisdn,
-                questionId,
-                submittedAnswer: submittedAnswer.toLowerCase(),
-                isHintUsed,
-                gameDuration
-            })
-        });
-
-        if (!response.ok) {
-            throw new Error(`Failed to submit gameplay: ${response.status} ${response.statusText}`);
-        }
-
-        const data = await response.json();
-        return data;
-    } catch (error) {
-        console.error('Submit gameplay error:', error);
-        throw error;
+  return apiRequest<{ statusCode: string; statusMessage: string; message: string; }>(
+    API_BASE_URL_2002,
+    '/api/FastestFingers/GamePlay/SubmitGamePlay',
+    'POST',
+    token,
+    {
+      msisdn,
+      questionId,
+      submittedAnswer: submittedAnswer.toLowerCase(),
+      isHintUsed,
+      gameDuration
     }
+  );
 }
 
+// Get User Profile
 export async function getUserProfile(msisdn: string, token: string): Promise<any> {
-    const url = `${baseUrl}/api/FastestFingers/Profile/GetUserProfile?msisdn=${msisdn}`;
-
-    try {
-        const response = await fetch(url, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`
-            }
-        });
-
-        if (!response.ok) {
-            throw new Error(`Failed to fetch user profile: ${response.status} ${response.statusText}`);
-        }
-
-        const data = await response.json();
-        return data;
-    } catch (error) {
-        console.error('Error fetching user profile:', error);
-        throw error;
-    }
+  return apiRequest<any>(
+    API_BASE_URL_2002,
+    `/api/FastestFingers/Profile/GetUserProfile?msisdn=${msisdn}`,
+    'GET',
+    token
+  );
 }
 
-// Function to save user profile
+// Save User Profile
 export async function saveUserProfile(profile: UserProfile, token: string): Promise<any> {
-    const url = `${baseUrl}/api/FastestFingers/Profile/SaveUserProfile`;
-
-    try {
-        const response = await fetch(url, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`
-            },
-            body: JSON.stringify(profile)
-        });
-
-        if (!response.ok) {
-            throw new Error(`Failed to save user profile: ${response.status} ${response.statusText}`);
-        }
-
-        const data = await response.json();
-        return data;
-    } catch (error) {
-        console.error('Error saving user profile:', error);
-        throw error;
-    }
+  return apiRequest<any>(
+    API_BASE_URL_2002,
+    '/api/FastestFingers/Profile/SaveUserProfile',
+    'POST',
+    token,
+    profile
+  );
 }
 
+// Fetch Leaderboard
 export async function fetchLeaderboard(msisdn: string, token: string): Promise<any> {
-    const url = `${baseUrl}/api/FastestFingers/Leaderboard/GetLeaderboardWithSubscriber?msisdn=${msisdn}`;
-
-    try {
-        const response = await fetch(url, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`
-            }
-        });
-
-        if (!response.ok) {
-            throw new Error(`Failed to fetch leaderboard: ${response.status} ${response.statusText}`);
-        }
-
-        const data = await response.json();
-        return data;
-    } catch (error) {
-        console.error('Error fetching leaderboard:', error);
-        throw error;
-    }
+  return apiRequest<any>(
+    API_BASE_URL_2002,
+    `/api/FastestFingers/Leaderboard/GetLeaderboardWithSubscriber?msisdn=${msisdn}`,
+    'GET',
+    token
+  );
 }
 
-// Function to check subscription status
+// Check Subscription Status (using a different base URL)
 export async function checkSubscriptionStatus(msisdn: string, productId: number): Promise<{ statusCode: string; message: string; }> {
-    const url = `http://ydvassdp.com:6002/api/DataSync/Subscription/CheckSubscriptionStatus?msisdn=${msisdn}&productId=${productId}`;
-
-    try {
-        const response = await fetch(url, {
-            method: 'GET',
-            headers: { 'accept': 'application/json' }
-        });
-
-        const data = await response.json();
-
-        if (!response.ok) {
-            throw new Error(data.message || `Failed to check subscription status: ${response.status} ${response.statusText}`);
-        }
-
-        return data;
-    } catch (error) {
-        console.error('Error checking subscription status:', (error as Error).message);
-        throw new Error(handleError(error));
-    }
+  return apiRequest<{ statusCode: string; message: string; }>(
+    API_BASE_URL_6002,
+    `/api/DataSync/Subscription/CheckSubscriptionStatus?msisdn=${msisdn}&productId=${productId}`,
+    'GET'
+  ).catch(error => {
+    throw new Error(handleError(error));
+  });
 }
 
-// Function to fetch prizes based on country alpha2 code
+// Fetch Prizes by Country
 export async function fetchPrizesByCountry(countryAlpha2Code: string): Promise<Prize[]> {
-    const url = `${baseUrl}/api/Prize/GetPrizes?countryAlpha2Code=${countryAlpha2Code}`;
-    
-    // console.log('Fetching URL:', url);
-
-    try {
-        const response = await fetch(url, {
-            method: 'GET',
-            headers: {
-                'accept': 'application/json',
-            },
-        });
-        const data = await response.json() as PrizeResponse;
-
-        if (!response.ok) {
-            throw new Error(`Failed to fetch prizes: ${response.status} ${response.statusText}`);
-        }
-
-        // console.log('Fetched Data:', data);
-        return data.data || [];
-    } catch (error) {
-        console.error('Error fetching prizes:', error);
-
-        if (error instanceof TypeError &&
-            (error.message === "Failed to fetch" || error.message.toLowerCase().includes("load fail"))) {
-            throw new Error("Failed to fetch prizes: Please try refreshing the page or check back later.");
-        }
-        throw error;
-
-
-    }
+  return apiRequest<PrizeResponse>(
+    API_BASE_URL_2002,
+    `/api/Prize/GetPrizes?countryAlpha2Code=${countryAlpha2Code}`,
+    'GET'
+  ).then(data => data.data || []);
 }

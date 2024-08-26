@@ -36,7 +36,7 @@ const Login: React.FC = () => {
     try {
       const subscriptionStatus = await checkSubscriptionStatus(cleanMsisdn, 1);
       if (subscriptionStatus.statusCode !== '999') {
-        console.error('sub error:', subscriptionStatus.statusCode);
+        console.error('Subscription check error:', subscriptionStatus.statusCode);
         setIsSubscribed(false);
         setError(subscriptionStatus.message || 'Subscription check failed. Please try again.');
         setIsLoading(false);
@@ -69,8 +69,9 @@ const Login: React.FC = () => {
       // setError('Hello, You are currently not subscribed to Fastest Finger.');
         setError((error as Error).message || 'Login failed: Please check your credentials or subscribe.');
       console.error('Login error:', error);
+    } finally {
+      setIsLoading(false);
     }
-    setIsLoading(false);
   };
 
   const closeErrorModal = () => setError(null);
