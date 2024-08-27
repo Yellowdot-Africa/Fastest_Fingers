@@ -1,7 +1,7 @@
 import { Prize, PrizeResponse, UserProfile } from "../types";
 
-const API_BASE_URL_2002 = "http://ydvassdp.com:2002";
-const API_BASE_URL_6002 = "http://ydvassdp.com:6002";
+const API_BASE_URL_2002 = "https://ydvassdp.com:2002";
+const API_BASE_URL_6002 = "https://ydvassdp.com:6002";
 
 // error handler
 const handleError = (error: any) => {
