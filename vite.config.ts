@@ -7,14 +7,14 @@ export default defineConfig({
     proxy: {
       // Proxy for the first API with base URL at port 2002
       '/api': {
-        target: 'https://ydvassdp.com:2002',  // The first API server
+        target: 'https://ydvassdp.com:2001',  // The first API server
         changeOrigin: true,
         secure: false,
         rewrite: (path) => path.replace(/^\/api/, ''),
       },
       // Proxy for the second API with base URL at port 6002
       '/another-api': {
-        target: 'https://ydvassdp.com:6002',  // The second API server
+        target: 'https://ydvassdp.com:6001',  // The second API server
         changeOrigin: true,
         secure: false,
         rewrite: (path) => path.replace(/^\/another-api/, '/api/DataSync/Subscription'),

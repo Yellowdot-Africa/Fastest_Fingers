@@ -1,7 +1,7 @@
 import { Prize, PrizeResponse, UserProfile } from "../types";
 
-const API_BASE_URL_2002 = "https://ydvassdp.com:2002";
-const API_BASE_URL_6002 = "https://ydvassdp.com:6002";
+const API_BASE_URL_2001 = "https://ydvassdp.com:2001";
+const API_BASE_URL_6001 = "https://ydvassdp.com:6001";
 
 // error handler
 const handleError = (error: any) => {
@@ -53,7 +53,7 @@ async function apiRequest<T>(
 // Login User
 export async function loginUser(username: string, password: string): Promise<string | null> {
   return apiRequest<{ jwtToken: string }>(
-    API_BASE_URL_2002,
+    API_BASE_URL_2001,
     '/api/FastestFingers/Authorization/Login',
     'POST',
     null,
@@ -64,7 +64,7 @@ export async function loginUser(username: string, password: string): Promise<str
 // Fetch Game Questions
 export async function fetchGameQuestions(count: number, token: string): Promise<any> {
   return apiRequest<any>(
-    API_BASE_URL_2002,
+    API_BASE_URL_2001,
     `/api/FastestFingers/GamePlay/GetGameQuestions?count=${count}`,
     'GET',
     token
@@ -81,7 +81,7 @@ export async function submitGamePlay(
   token: string
 ): Promise<{ statusCode: string; statusMessage: string; message: string; } | null> {
   return apiRequest<{ statusCode: string; statusMessage: string; message: string; }>(
-    API_BASE_URL_2002,
+    API_BASE_URL_2001,
     '/api/FastestFingers/GamePlay/SubmitGamePlay',
     'POST',
     token,
@@ -98,7 +98,7 @@ export async function submitGamePlay(
 // Get User Profile
 export async function getUserProfile(msisdn: string, token: string): Promise<any> {
   return apiRequest<any>(
-    API_BASE_URL_2002,
+    API_BASE_URL_2001,
     `/api/FastestFingers/Profile/GetUserProfile?msisdn=${msisdn}`,
     'GET',
     token
@@ -108,7 +108,7 @@ export async function getUserProfile(msisdn: string, token: string): Promise<any
 // Save User Profile
 export async function saveUserProfile(profile: UserProfile, token: string): Promise<any> {
   return apiRequest<any>(
-    API_BASE_URL_2002,
+    API_BASE_URL_2001,
     '/api/FastestFingers/Profile/SaveUserProfile',
     'POST',
     token,
@@ -119,7 +119,7 @@ export async function saveUserProfile(profile: UserProfile, token: string): Prom
 // Fetch Leaderboard
 export async function fetchLeaderboard(msisdn: string, token: string): Promise<any> {
   return apiRequest<any>(
-    API_BASE_URL_2002,
+    API_BASE_URL_2001,
     `/api/FastestFingers/Leaderboard/GetLeaderboardWithSubscriber?msisdn=${msisdn}`,
     'GET',
     token
@@ -129,7 +129,7 @@ export async function fetchLeaderboard(msisdn: string, token: string): Promise<a
 // Check Subscription Status (using a different base URL)
 export async function checkSubscriptionStatus(msisdn: string, productId: number): Promise<{ statusCode: string; message: string; }> {
   return apiRequest<{ statusCode: string; message: string; }>(
-    API_BASE_URL_6002,
+    API_BASE_URL_6001,
     `/api/DataSync/Subscription/CheckSubscriptionStatus?msisdn=${msisdn}&productId=${productId}`,
     'GET'
   ).catch(error => {
@@ -140,7 +140,7 @@ export async function checkSubscriptionStatus(msisdn: string, productId: number)
 // Fetch Prizes by Country
 export async function fetchPrizesByCountry(countryAlpha2Code: string): Promise<Prize[]> {
   return apiRequest<PrizeResponse>(
-    API_BASE_URL_2002,
+    API_BASE_URL_2001,
     `/api/Prize/GetPrizes?countryAlpha2Code=${countryAlpha2Code}`,
     'GET'
   ).then(data => data.data || []);
