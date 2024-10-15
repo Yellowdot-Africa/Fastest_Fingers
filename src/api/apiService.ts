@@ -127,10 +127,10 @@ export async function fetchLeaderboard(msisdn: string, token: string): Promise<a
 }
 
 // Check Subscription Status (using a different base URL)
-export async function checkSubscriptionStatus(msisdn: string, productId: number): Promise<{ statusCode: string; message: string; }> {
+export async function checkSubscriptionStatus(msisdn: string, serviceId: number): Promise<{ statusCode: string; message: string; }> {
   return apiRequest<{ statusCode: string; message: string; }>(
     API_BASE_URL_6001,
-    `/api/DataSync/Subscription/CheckSubscriptionStatus?msisdn=${msisdn}&productId=${productId}`,
+    `/api/DataSync/Subscription/CheckSubscriptionStatus?msisdn=${msisdn}&serviceId=${serviceId}`,
     'GET'
   ).catch(error => {
     throw new Error(handleError(error));
