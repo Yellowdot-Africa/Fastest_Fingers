@@ -9,6 +9,8 @@ import Layout from './components/layout';
 import GamePlay from './pages/GamePlay';
 import PrivateRoute from './components/PrivateRoute';
 import Subscribe from './pages/Subcribe';
+import SubscriptionSuccess from './pages/SubscriptionSuccess';
+import SubscriptionFailure from './pages/SubscriptionFailure';
 
 const App: React.FC = () => {
   return (
@@ -37,6 +39,14 @@ const App: React.FC = () => {
          <Route path="subscribe" element={
           <Subscribe />
         } />
+          <Route path="/subscription/success" element={
+          <SubscriptionSuccess />
+          } />
+          <Route path="/subscription/failure" element={
+          <SubscriptionFailure />
+          } />
+
+
 
         <Route path="*" element={<NotFound />} />
       </Route>
@@ -47,3 +57,8 @@ const App: React.FC = () => {
 };
 
 export default App;
+
+
+
+
+
