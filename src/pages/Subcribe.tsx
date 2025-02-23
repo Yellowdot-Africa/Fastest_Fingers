@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import FFButton from '../components/common/FFButton';
-import SubscribeModal from '../components/modals/SubscribeModal';
+// import SubscribeModal from '../components/modals/SubscribeModal';
 import { fetchPrizesByCountry } from '../api/apiService';
 import { Prize } from '../types';
 
 const Subscribe: React.FC = () => {
-  const [isSubscribeModalVisible, setSubscribeModalVisible] = useState(false);
+  // const [isSubscribeModalVisible, setSubscribeModalVisible] = useState(false);
   const [prizes, setPrizes] = useState<Prize[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
