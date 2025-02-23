@@ -12,7 +12,7 @@ const SubscriptionFailure: React.FC  = () => {
 
   useEffect(() => {
     setTimeout(() => {
-      window.location.href = "https://ydtelecel-sdp.netlify.app";
+      window.location.href = "https://vas-fastest-finger.netlify.app";
     }, 8000);
   }, []);
 
@@ -20,7 +20,7 @@ const SubscriptionFailure: React.FC  = () => {
     <div className="flex flex-col items-center justify-center min-h-screen text-center">
       <h1 className="text-2xl font-bold text-red-400">Subscription Failed ❌</h1>
       <p className="mt-2 text-gray-700">Your subscription could not be completed.</p>
-      <p className="mt-2 text-gray-700">Redirecting you to the landing page...</p>
+      <p className="mt-2 text-gray-700">Redirecting you...</p>
     </div>
   );
 };
