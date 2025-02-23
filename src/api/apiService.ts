@@ -2,6 +2,7 @@ import { Prize, PrizeResponse, UserProfile } from "../types";
 
 const API_BASE_URL_2001 = "https://ydvassdp.com:2001";
 const API_BASE_URL_6001 = "https://ydvassdp.com:6001";
+const API_BASE_URL_69 = "http://69.197.174.10:8093"; 
 
 // error handler
 const handleError = (error: any) => {
@@ -127,15 +128,29 @@ export async function fetchLeaderboard(msisdn: string, token: string): Promise<a
 }
 
 // Check Subscription Status (using a different base URL)
-export async function checkSubscriptionStatus(msisdn: string, serviceId: number): Promise<{ statusCode: string; message: string; }> {
-  return apiRequest<{ statusCode: string; message: string; }>(
-    API_BASE_URL_6001,
-    `/api/DataSync/Subscription/CheckSubscriptionStatus?msisdn=${msisdn}&serviceId=${serviceId}`,
+// export async function checkSubscriptionStatus(msisdn: string, serviceId: number): Promise<{ statusCode: string; message: string; }> {
+//   export async function checkSubscriptionStatus(msisdn: string): Promise<{ statusCode: string; message: string; }> {
+
+//   return apiRequest<{ statusCode: string; message: string; }>(
+//     API_BASE_URL_69,
+//     // `/api/DataSync/Subscription/CheckSubscriptionStatus?msisdn=${msisdn}&serviceId=${serviceId}`,
+//     `/api/DataSync/CheckActiveSubscription?msisdn=${msisdn}`,
+//     'GET'
+//   ).catch(error => {
+//     throw new Error(handleError(error));
+//   });
+// }
+
+export async function checkSubscriptionStatus(msisdn: string): Promise<{ isSuccessful: boolean; message: string; data: { isActive: boolean } }> {
+  return apiRequest<{ isSuccessful: boolean; message: string; data: { isActive: boolean } }>(
+    API_BASE_URL_69,
+    `/api/DataSync/CheckActiveSubscription?msisdn=${msisdn}`,
     'GET'
   ).catch(error => {
     throw new Error(handleError(error));
   });
 }
+
 
 // Fetch Prizes by Country
 export async function fetchPrizesByCountry(countryAlpha2Code: string): Promise<Prize[]> {
@@ -145,3 +160,6 @@ export async function fetchPrizesByCountry(countryAlpha2Code: string): Promise<P
     'GET'
   ).then(data => data.data || []);
 }
+
+
+

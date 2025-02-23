@@ -28,9 +28,9 @@ const Subscribe: React.FC = () => {
     loadPrizes();
   }, [countryAlpha2Code]);
 
-  const toggleSubscribeModal = () => {
-    setSubscribeModalVisible(!isSubscribeModalVisible);
-  };
+  // const toggleSubscribeModal = () => {
+  //   setSubscribeModalVisible(!isSubscribeModalVisible);
+  // };
 
   return (
     <section className="h-screen font-inria py-4 md:py-10 pb-2 px-6 md:px-16 lg:px-24 text-ffgray">
@@ -67,10 +67,16 @@ const Subscribe: React.FC = () => {
 
         <div className="mx-auto text-center mt-10">
           <p>PLAY TO WIN AMAZING PRIZES, NOW!</p>
-          <FFButton text="Subscribe To Plan" className="md:w-2/3" onClick={toggleSubscribeModal} />
+          {/* <FFButton text="Subscribe To Plan" className="md:w-2/3" onClick={toggleSubscribeModal} /> */}
+          <FFButton 
+  text="Subscribe To Plan" 
+  className="md:w-2/3" 
+  onClick={() => window.location.href = "https://ydtelecel-sdp.netlify.app"} 
+/>
+
         </div>
       </div>
-      <SubscribeModal isVisible={isSubscribeModalVisible} onClose={toggleSubscribeModal} />
+      {/* <SubscribeModal isVisible={isSubscribeModalVisible} onClose={toggleSubscribeModal} /> */}
     </section>
   );
 };

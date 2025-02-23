@@ -34,3 +34,8 @@ const ErrorModal: React.FC<ModalProps> = ({ isVisible, message, onClose }) => {
 };
 
 export default ErrorModal;
+
+
+
+
+
