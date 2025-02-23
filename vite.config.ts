@@ -18,7 +18,7 @@ export default defineConfig({
         target: 'http://69.197.174.10:8093',
         changeOrigin: true,
         secure: false,
-        rewrite: (path) => path.replace(/^\/another-api/, '/api/DataSync/Subscription'),
+        rewrite: (path) => path.replace(/^\/another-api/, '/api/DataSync/CheckActiveSubscription'),
       },
     },
   },
