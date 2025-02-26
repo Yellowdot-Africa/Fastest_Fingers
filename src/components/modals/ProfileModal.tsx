@@ -38,7 +38,9 @@ const ProfileModal: React.FC<ProfileModalProps> = ({ isVisible, onClose }) => {
       };
 
       const response = await saveUserProfile(updatedProfile, token);
-      if (response && response.statusCode === '999') {
+      // if (response && response.statusCode === '999') {
+        if (response?.isSuccessful) {
+
         setConfirmText('Confirmed');
         setProfile(updatedProfile);
         setTimeout(() => {

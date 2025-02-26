@@ -3,7 +3,7 @@ import { Prize, PrizeResponse, UserProfile } from "../types";
 const API_BASE_URL_2001 = "https://ydvassdp.com:2001";
 // const API_BASE_URL_6001 = "https://ydvassdp.com:6001";
 const API_BASE_URL_69 = "http://69.197.174.10:8093"; 
-
+const API_BASE_URL_fastestfingers = "https://fastestfingers.runasp.net";
 
 
 // error handler
@@ -54,25 +54,57 @@ async function apiRequest<T>(
 
 
 // Login User
+// export async function loginUser(username: string, password: string): Promise<string | null> {
+//   return apiRequest<{ jwtToken: string }>(
+//     API_BASE_URL_2001,
+//     '/api/FastestFingers/Authorization/Login',
+//     'POST',
+//     null,
+//     { username, password }
+//   ).then(data => data.jwtToken);
+// }
+
+
 export async function loginUser(username: string, password: string): Promise<string | null> {
-  return apiRequest<{ jwtToken: string }>(
-    API_BASE_URL_2001,
+  console.log("Calling login API...");
+
+  return apiRequest<{data: { jwtToken: string }}>(
+    API_BASE_URL_fastestfingers,
     '/api/FastestFingers/Authorization/Login',
     'POST',
     null,
     { username, password }
-  ).then(data => data.jwtToken);
+  )
+  // .then(data => data.jwtToken);
+  .then(response => {
+    console.log("Login API Response:", response);
+    // return data.jwtToken;
+    if (!response?.data?.jwtToken) {
+      console.error("JWT token missing in response:", response);
+      return null;
+  }
+  return response.data.jwtToken; 
+})
+.catch(error => {
+  console.error("Login API Error:", error);
+  return null;
+});
 }
 
 // Fetch Game Questions
-export async function fetchGameQuestions(count: number, token: string): Promise<any> {
+export async function fetchGameQuestions(count: number, msisdn:string, token: string): Promise<any> {
   return apiRequest<any>(
-    API_BASE_URL_2001,
-    `/api/FastestFingers/GamePlay/GetGameQuestions?count=${count}`,
+
+    API_BASE_URL_fastestfingers,
+    `/api/FastestFingers/GamePlay/GetGameQuestions?count=${count}&msisdn=${msisdn}`,
     'GET',
+
     token
+
   );
+
 }
+
 
 // Submit Game Play
 export async function submitGamePlay(
@@ -82,9 +114,9 @@ export async function submitGamePlay(
   isHintUsed: boolean,
   gameDuration: number,
   token: string
-): Promise<{ statusCode: string; statusMessage: string; message: string; } | null> {
-  return apiRequest<{ statusCode: string; statusMessage: string; message: string; }>(
-    API_BASE_URL_2001,
+  ): Promise<{ isSuccessful: boolean; message: string; data?: any } | null> {
+    return apiRequest<{ isSuccessful: boolean; message: string; data?: any }>(
+      API_BASE_URL_fastestfingers,
     '/api/FastestFingers/GamePlay/SubmitGamePlay',
     'POST',
     token,
@@ -93,15 +125,17 @@ export async function submitGamePlay(
       questionId,
       submittedAnswer: submittedAnswer.toLowerCase(),
       isHintUsed,
-      gameDuration
+      gameDuration,
+      transactionId: crypto.randomUUID() 
     }
   );
 }
 
+
 // Get User Profile
 export async function getUserProfile(msisdn: string, token: string): Promise<any> {
   return apiRequest<any>(
-    API_BASE_URL_2001,
+    API_BASE_URL_fastestfingers,
     `/api/FastestFingers/Profile/GetUserProfile?msisdn=${msisdn}`,
     'GET',
     token
@@ -111,7 +145,7 @@ export async function getUserProfile(msisdn: string, token: string): Promise<any
 // Save User Profile
 export async function saveUserProfile(profile: UserProfile, token: string): Promise<any> {
   return apiRequest<any>(
-    API_BASE_URL_2001,
+    API_BASE_URL_fastestfingers,
     '/api/FastestFingers/Profile/SaveUserProfile',
     'POST',
     token,
@@ -122,10 +156,23 @@ export async function saveUserProfile(profile: UserProfile, token: string): Prom
 // Fetch Leaderboard
 export async function fetchLeaderboard(msisdn: string, token: string): Promise<any> {
   return apiRequest<any>(
-    API_BASE_URL_2001,
+    API_BASE_URL_fastestfingers,
     `/api/FastestFingers/Leaderboard/GetLeaderboardWithSubscriber?msisdn=${msisdn}`,
     'GET',
     token
+  );
+}
+// update Leaderboard
+export async function updateLeaderboard(msisdn: string, gameScore: number, token: string): Promise<any> {
+  return apiRequest<any>(
+    API_BASE_URL_fastestfingers,
+    `/api/FastestFingers/Leaderboard/UpdateLeaderboardScore`,
+    'POST',
+    token,
+    {
+      msisdn,
+      gameScore
+    },
   );
 }
 
@@ -162,6 +209,10 @@ export async function fetchPrizesByCountry(countryAlpha2Code: string): Promise<P
     'GET'
   ).then(data => data.data || []);
 }
+
+
+
+
 
 
 

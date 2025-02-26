@@ -5,8 +5,11 @@ interface AuthContextType {
     token: string;
     msisdn: string;
     profile: UserProfile | null;
+    // tokenExpiry: number;
+
     isSubscribed: boolean;
     setToken: (token: string) => void;
+
     setMsisdn: (msisdn: string) => void;
     setProfile: (profile: Partial<UserProfile>) => void;
     setIsSubscribed: (isSubscribed: boolean) => void;
@@ -18,6 +21,8 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
     const [token, setToken] = useState<string>(() => sessionStorage.getItem('token') || '');
     const [msisdn, setMsisdn] = useState<string>(() => sessionStorage.getItem('msisdn') || '');
+    // const [tokenExpiry, setTokenExpiry] = useState<number>(() => Number(sessionStorage.getItem('tokenExpiry')) || 0);
+
     const [profile, setProfile] = useState<UserProfile | null>(() => {
         const profileData = sessionStorage.getItem('profile');
         return profileData ? JSON.parse(profileData) : null;
@@ -31,18 +36,32 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         }
     }, []);
 
+    // useEffect(() => {
+    //     if (tokenExpiry && new Date().getTime() > tokenExpiry * 1000) {
+    //         logout();
+    //     }
+    // }, []);
+
     useEffect(() => {
         sessionStorage.setItem('token', token);
         sessionStorage.setItem('msisdn', msisdn);
+        // sessionStorage.setItem('tokenExpiry', tokenExpiry.toString());
         sessionStorage.setItem('profile', JSON.stringify(profile));
         sessionStorage.setItem('isSubscribed', isSubscribed.toString());
     }, [token, msisdn, profile, isSubscribed]);
 
     const setTokenWithExpiration = (newToken: string) => {
+        console.log("Setting token:", newToken);
         setToken(newToken);
         const expirationTime = new Date().getTime() + 3600000; // Example: 1 hour
         sessionStorage.setItem('tokenExpirationTime', expirationTime.toString());
+        sessionStorage.setItem('token', newToken); 
     };
+
+    // const setTokenWithExpiration = (newToken: string, expiry: number) => {
+    //     setToken(newToken);
+    //     setTokenExpiry(expiry);
+    // };
 
     const updateProfile = (profileData: Partial<UserProfile>) => {
         const completeProfile: UserProfile = {
@@ -78,3 +97,7 @@ export const useAuth = () => {
     }
     return context;
 };
+
+
+
+

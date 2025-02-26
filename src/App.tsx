@@ -19,22 +19,22 @@ const App: React.FC = () => {
         <Route index element={
           <PrivateRoute>
             <Home />
-          </PrivateRoute>
+        </PrivateRoute>
         } />
         <Route path="games" element={
           <PrivateRoute>
             <GamePlay />
-          </PrivateRoute>
+           </PrivateRoute>
         } />
         <Route path="leaderboard" element={
           <PrivateRoute>
             <Leaderboard />
-          </PrivateRoute>
+           </PrivateRoute>
         } />
         <Route path="settings" element={
           <PrivateRoute>
             <Settings />
-          </PrivateRoute>
+           </PrivateRoute> 
         } />
          <Route path="subscribe" element={
           <Subscribe />

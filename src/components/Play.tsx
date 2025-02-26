@@ -10,6 +10,8 @@ interface GameQuestion {
     correctAnswer: string;
     hint: string;
     instruction: string;
+    token:string;
+    // msisdn: number;
 }
 
 const Play: React.FC<{ onClose: () => void }> = ({ onClose }) => {
@@ -36,6 +38,8 @@ const Play: React.FC<{ onClose: () => void }> = ({ onClose }) => {
     const [modalMessage, setModalMessage] = useState('');
     const [hintUsed, setHintUsed] = useState<boolean>(false);
     const { token, msisdn } = useAuth();
+    const [questionCount, setQuestionCount] = useState<number>(20);
+
 
     useEffect(() => {
         countdownRef.current = setInterval(() => {
@@ -53,16 +57,16 @@ const Play: React.FC<{ onClose: () => void }> = ({ onClose }) => {
 
     useEffect(() => {
         const getQuestions = async () => {
-            if (token) {
+            if (token && msisdn) {
                 setLoading(true);
                 try {
-                    const data = await fetchGameQuestions(1, token);
-                    if (data && data.statusCode === "999") {
-                        setQuestion(data.data[0]);
-                        setAvailableLetters(generateAvailableLetters(data.data[0].text));
-                        setSelectedLetters(Array(data.data[0].text.length).fill(''));
+                    const response = await fetchGameQuestions(questionCount , msisdn, token);
+                    if (response?.isSuccessful && response.data.length > 0) {
+                        setQuestion(response.data[0]);
+                        setAvailableLetters(generateAvailableLetters(response.data[0].text));
+                        setSelectedLetters(Array(response.data[0].text.length).fill(''));
                     } else {
-                        throw new Error(data.message || "Failed to fetch questions");
+                        throw new Error(response.message || "Failed to fetch questions");
                     }
                 } catch (error) {
                     console.error('Error fetching questions:', error);
@@ -73,7 +77,8 @@ const Play: React.FC<{ onClose: () => void }> = ({ onClose }) => {
         };
 
         getQuestions();
-    }, [token]);
+    }, [token, msisdn, questionCount]);
+
 
     const handleLetterSelect = (index: number) => {
         const letter = availableLetters[index];
@@ -120,8 +125,10 @@ const Play: React.FC<{ onClose: () => void }> = ({ onClose }) => {
         if (question && msisdn) {
             const submittedAnswer = selectedLetters.join('').toLowerCase();
             const response = await submitGamePlay(msisdn, question.id, submittedAnswer, hintUsed, timeUsed, token);
-            if (response && response.statusCode === "999") {
+            if (response?.isSuccessful) {
                 setModalMessage(response.message);
+                // setModalMessage("Game submitted successfully!");
+
                 setShowWinningModal(true);
             } else {
                 setModalMessage("Oops, Seems something went wrong.");
@@ -131,18 +138,23 @@ const Play: React.FC<{ onClose: () => void }> = ({ onClose }) => {
         setIsLoading(false);
     };
 
+
+   
+      
+
     const handleTimeOut = async () => {
         setModalMessage("Your time is up. 0 points awarded!");
         setShowWinningModal(true);
     };
 
     const resetGame = async () => {
-        if (token) {
-            const data = await fetchGameQuestions(1, token);
-            if (data && data.statusCode === "999") {
-                setQuestion(data.data[0]);
-                setAvailableLetters(generateAvailableLetters(data.data[0].text));
-                setSelectedLetters(Array(data.data[0].text.length).fill(''));
+        if (token && msisdn) {
+            const response = await fetchGameQuestions(questionCount , msisdn, token);
+
+            if (response?.isSuccessful && response.data.length > 0) {
+                setQuestion(response.data[0]);
+                setAvailableLetters(generateAvailableLetters(response.data[0].text));
+                setSelectedLetters(Array(response.data[0].text.length).fill(''));
                 setSelectedIndices([]);
                 setTimer(15);
                 setShowWinningModal(false);
@@ -224,3 +236,12 @@ const Play: React.FC<{ onClose: () => void }> = ({ onClose }) => {
 };
 
 export default Play;
+
+
+
+
+
+  
+
+
+

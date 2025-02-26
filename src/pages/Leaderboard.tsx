@@ -29,10 +29,12 @@ const Leaderboard: React.FC = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const data = await fetchLeaderboard(msisdn, token);
-                console.log('Fetched leaderboard:', data);
-                if (data && data.statusCode === '999') {
-                    setLeaderboardData(data.data);
+                const response = await fetchLeaderboard(msisdn, token);
+                // console.log('Fetched leaderboard:', response);
+                if (response && response.isSuccessful) {
+                    setLeaderboardData(response.data);
+                    // console.log(response.data);
+
                 } else {
                     setError('Failed to fetch leaderboard data.');
                 }
