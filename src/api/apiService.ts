@@ -66,7 +66,7 @@ async function apiRequest<T>(
 
 
 export async function loginUser(username: string, password: string): Promise<string | null> {
-  console.log("Calling login API...");
+  // console.log("Calling login API...");
 
   return apiRequest<{data: { jwtToken: string }}>(
     API_BASE_URL_fastestfingers,
@@ -77,7 +77,7 @@ export async function loginUser(username: string, password: string): Promise<str
   )
   // .then(data => data.jwtToken);
   .then(response => {
-    console.log("Login API Response:", response);
+    // console.log("Login API Response:", response);
     // return data.jwtToken;
     if (!response?.data?.jwtToken) {
       console.error("JWT token missing in response:", response);
@@ -202,13 +202,13 @@ export async function checkSubscriptionStatus(msisdn: string): Promise<{ isSucce
 
 
 // Fetch Prizes by Country
-export async function fetchPrizesByCountry(countryAlpha2Code: string): Promise<Prize[]> {
-  return apiRequest<PrizeResponse>(
-    API_BASE_URL_2001,
-    `/api/Prize/GetPrizes?countryAlpha2Code=${countryAlpha2Code}`,
-    'GET'
-  ).then(data => data.data || []);
-}
+// export async function fetchPrizesByCountry(countryAlpha2Code: string): Promise<Prize[]> {
+//   return apiRequest<PrizeResponse>(
+//     API_BASE_URL_2001,
+//     `/api/Prize/GetPrizes?countryAlpha2Code=${countryAlpha2Code}`,
+//     'GET'
+//   ).then(data => data.data || []);
+// }
 
 
 

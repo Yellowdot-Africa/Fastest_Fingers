@@ -51,7 +51,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     }, [token, msisdn, profile, isSubscribed]);
 
     const setTokenWithExpiration = (newToken: string) => {
-        console.log("Setting token:", newToken);
+        // console.log("Setting token:", newToken);
         setToken(newToken);
         const expirationTime = new Date().getTime() + 3600000; // Example: 1 hour
         sessionStorage.setItem('tokenExpirationTime', expirationTime.toString());

@@ -1,38 +1,38 @@
-import React, { useEffect, useState } from 'react';
+import React, {  useState } from 'react';
 import { useOutletContext } from 'react-router-dom';
 import FFButton from '../components/common/FFButton';
 import GamePlayModal from '../components/modals/GamePlayModal';
 import Play from '../components/Play';
 import { useAuth } from '../context/AuthContext';
-import { fetchPrizesByCountry } from '../api/apiService';
-import { Prize } from '../types';
+// import { fetchPrizesByCountry } from '../api/apiService';
+// import { Prize } from '../types';
 
 const Home: React.FC = () => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const { isPlaying, setIsPlaying } = useOutletContext<{ isPlaying: boolean; setIsPlaying: React.Dispatch<React.SetStateAction<boolean>> }>();
   const { profile } = useAuth();
   const nickname = profile?.nickname || '';
-  const [prizes, setPrizes] = useState<Prize[]>([]);
-  const countryAlpha2Code = localStorage.getItem('countryAlpha2Code') || 'GH';
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  // const [prizes, setPrizes] = useState<Prize[]>([]);
+  // const countryAlpha2Code = localStorage.getItem('countryAlpha2Code') || 'GH';
+  // const [isLoading, setIsLoading] = useState(false);
+  // const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
-    async function loadPrizes() {
-      setIsLoading(true);
-      setError(null);
-      try {
-        const prizeData = await fetchPrizesByCountry(countryAlpha2Code);
-        setPrizes(prizeData);
-      } catch (error) {
-        console.error('Error loading prizes:', error);
-        setError("Failed to load prizes: Please try refreshing the page or check back later.");
-      }
-      setIsLoading(false);
-    }
+  // useEffect(() => {
+  //   async function loadPrizes() {
+  //     setIsLoading(true);
+  //     setError(null);
+  //     try {
+  //       const prizeData = await fetchPrizesByCountry(countryAlpha2Code);
+  //       setPrizes(prizeData);
+  //     } catch (error) {
+  //       console.error('Error loading prizes:', error);
+  //       setError("Failed to load prizes: Please try refreshing the page or check back later.");
+  //     }
+  //     setIsLoading(false);
+  //   }
 
-    loadPrizes();
-  }, [countryAlpha2Code]);
+  //   loadPrizes();
+  // }, [countryAlpha2Code]);
 
   const toggleModal = () => {
     setIsModalVisible(!isModalVisible);
@@ -59,17 +59,17 @@ const Home: React.FC = () => {
 
           <div className="w-full md:w-max mx-auto">
             <img className="w-full md:w-max mx-auto" src="/images/prizes-won.svg" alt="prizes to be won" />
-            {isLoading ? (
-              <div className="my-20 flex flex-col items-center justify-center">
+            {/* {isLoading ? ( */}
+              {/* <div className="my-20 flex flex-col items-center justify-center">
                 <img className='w-10 h-10 mx-auto' src="/icons/spinner-neon.svg" alt="Loading" />
                 <p>Loading Prizes ....</p>
-              </div>
-            ) : error ? (
-              <div className="p-6 md:p-16 my-3 bg-[#F9F9F9] text-center  md:w-[520px] shadow md:text-xl font-bold text-red-500">
+              </div> */}
+            {/* ) : error ? ( */}
+              {/* <div className="p-6 md:p-16 my-3 bg-[#F9F9F9] text-center  md:w-[520px] shadow md:text-xl font-bold text-red-500">
                 {error}
               </div>
-            ) : (
-              <div className="p-6 md:p-16 my-3 space-y-6 bg-[#F9F9F9] text-ffgray md:w-[520px] shadow md:text-xl font-bold">
+            ) : ( */}
+              {/* <div className="p-6 md:p-16 my-3 space-y-6 bg-[#F9F9F9] text-ffgray md:w-[520px] shadow md:text-xl font-bold">
                 {prizes.map((prize, index) => (
                   <div key={index} className="flex items-center justify-between md:space-x-6">
                     <img src={`/images/${prize.type.toLowerCase()}.svg`} alt={`${prize.type} image`} />
@@ -78,7 +78,8 @@ const Home: React.FC = () => {
                   </div>
                 ))}
               </div>
-            )}
+            )
+            } */}
 
             <div className="mx-auto text-center mt-10 max-md:mb-16">
               <p>PLAY TO WIN AMAZING PRIZES, NOW!</p>

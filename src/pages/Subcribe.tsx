@@ -1,32 +1,32 @@
 import React, { useEffect, useState } from 'react';
 import FFButton from '../components/common/FFButton';
 // import SubscribeModal from '../components/modals/SubscribeModal';
-import { fetchPrizesByCountry } from '../api/apiService';
-import { Prize } from '../types';
+// import { fetchPrizesByCountry } from '../api/apiService';
+// import { Prize } from '../types';
 
 const Subscribe: React.FC = () => {
   // const [isSubscribeModalVisible, setSubscribeModalVisible] = useState(false);
-  const [prizes, setPrizes] = useState<Prize[]>([]);
+  // const [prizes, setPrizes] = useState<Prize[]>([]);
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-  const countryAlpha2Code = localStorage.getItem('countryAlpha2Code') || 'GH';
+  // const [error, setError] = useState<string | null>(null);
+  // const countryAlpha2Code = localStorage.getItem('countryAlpha2Code') || 'GH';
 
-  useEffect(() => {
-    async function loadPrizes() {
-      setIsLoading(true);
-      setError(null);
-      try {
-        const prizeData = await fetchPrizesByCountry(countryAlpha2Code);
-        setPrizes(prizeData);
-      } catch (error) {
-        console.error('Error loading prizes:', error);
-        setError((error as Error).message );
-      }
-      setIsLoading(false);
-    }
+  // useEffect(() => {
+  //   async function loadPrizes() {
+  //     setIsLoading(true);
+  //     setError(null);
+  //     try {
+  //       const prizeData = await fetchPrizesByCountry(countryAlpha2Code);
+  //       setPrizes(prizeData);
+  //     } catch (error) {
+  //       console.error('Error loading prizes:', error);
+  //       setError((error as Error).message );
+  //     }
+  //     setIsLoading(false);
+  //   }
 
-    loadPrizes();
-  }, [countryAlpha2Code]);
+  //   loadPrizes();
+  // }, [countryAlpha2Code]);
 
   // const toggleSubscribeModal = () => {
   //   setSubscribeModalVisible(!isSubscribeModalVisible);
@@ -44,7 +44,7 @@ const Subscribe: React.FC = () => {
       <div className="w-full md:w-max mx-auto">
         <img className="w-full md:w-max mx-auto" src="/images/prizes-won.svg" alt="prizes to be won" />
         
-        {isLoading ? (
+        {/* {isLoading ? (
           <div className="my-20 flex flex-col items-center justify-center">
             <img className='w-10 h-10 mx-auto' src="/icons/spinner-neon.svg" alt="Loading" />
             <p>Loading Prizes ....</p>
@@ -63,7 +63,7 @@ const Subscribe: React.FC = () => {
               </div>
             ))}
           </div>
-        )}
+        )} */}
 
         <div className="mx-auto text-center mt-10">
           <p>PLAY TO WIN AMAZING PRIZES, NOW!</p>
@@ -82,6 +82,11 @@ const Subscribe: React.FC = () => {
 };
 
 export default Subscribe;
+
+
+
+
+
 
 
 
