@@ -6,8 +6,8 @@ const SubscriptionFailure: React.FC  = () => {
 
   // useEffect(() => {
   //   setTimeout(() => {
-  //     navigate("/subscribe"); 
-  //   }, 5000); 
+  //     navigate("/"); 
+  //   }, 8000); 
   // }, [navigate]);
 
   useEffect(() => {

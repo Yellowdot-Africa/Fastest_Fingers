@@ -17,9 +17,9 @@ const App: React.FC = () => {
     <Routes>
       <Route path="/" element={<Layout />}>
         <Route index element={
-          <PrivateRoute>
+          // <PrivateRoute>
             <Home />
-        </PrivateRoute>
+        // </PrivateRoute>
         } />
         <Route path="games" element={
           <PrivateRoute>
