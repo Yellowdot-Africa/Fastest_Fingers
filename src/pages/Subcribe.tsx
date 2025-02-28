@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import FFButton from '../components/common/FFButton';
+import React from "react";
+import FFButton from "../components/common/FFButton";
 // import SubscribeModal from '../components/modals/SubscribeModal';
 // import { fetchPrizesByCountry } from '../api/apiService';
 // import { Prize } from '../types';
@@ -7,7 +7,7 @@ import FFButton from '../components/common/FFButton';
 const Subscribe: React.FC = () => {
   // const [isSubscribeModalVisible, setSubscribeModalVisible] = useState(false);
   // const [prizes, setPrizes] = useState<Prize[]>([]);
-  const [isLoading, setIsLoading] = useState(false);
+  // const [isLoading, setIsLoading] = useState(false);
   // const [error, setError] = useState<string | null>(null);
   // const countryAlpha2Code = localStorage.getItem('countryAlpha2Code') || 'GH';
 
@@ -43,9 +43,15 @@ const Subscribe: React.FC = () => {
 
       <div className="w-full md:w-max mx-auto">
         {/* <img className="w-full md:w-max mx-auto" src="/images/prizes-won.svg" alt="prizes to be won" /> */}
-        <img className="w-full md:w-max mx-auto mt-28" src="/images/FFlogo.svg" alt="prizes to be won" />
+        <img
+          className="w-full md:w-max mx-auto mt-28"
+          src="/images/FFlogo.svg"
+          alt="prizes to be won"
+        />
 
-<h1 className='text-ffgray text-[20px] text-center font-semibold my-2 italic'>Play for fun,Play for cash</h1>
+        <h1 className="text-ffgray text-[20px] text-center font-semibold my-2 italic">
+          Play for fun,Play for cash
+        </h1>
 
         {/* {isLoading ? (
           <div className="my-20 flex flex-col items-center justify-center">
@@ -73,12 +79,13 @@ const Subscribe: React.FC = () => {
           <p>PLAY FASTEST FINGER!</p>
 
           {/* <FFButton text="Subscribe To Plan" className="md:w-2/3" onClick={toggleSubscribeModal} /> */}
-          <FFButton 
-  text="Subscribe To Plan" 
-  className="md:w-2/3" 
-  onClick={() => window.location.href = "https://ydtelecel-sdp.netlify.app"} 
-/>
-
+          <FFButton
+            text="Subscribe To Plan"
+            className="md:w-2/3"
+            onClick={() =>
+              (window.location.href = "https://ydtelecel-sdp.netlify.app")
+            }
+          />
         </div>
       </div>
       {/* <SubscribeModal isVisible={isSubscribeModalVisible} onClose={toggleSubscribeModal} /> */}
@@ -87,13 +94,3 @@ const Subscribe: React.FC = () => {
 };
 
 export default Subscribe;
-
-
-
-
-
-
-
-
-
-
