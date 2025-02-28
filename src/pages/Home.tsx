@@ -58,7 +58,11 @@ const Home: React.FC = () => {
           </div>
 
           <div className="w-full md:w-max mx-auto">
-            <img className="w-full md:w-max mx-auto" src="/images/prizes-won.svg" alt="prizes to be won" />
+          <img className="w-full md:w-max mx-auto mt-28" src="/images/FFlogo.svg" alt="prizes to be won" />
+
+            <h1 className='text-ffgray text-[20px] text-center font-semibold my-2 italic'>Play for fun,Play for cash</h1>
+
+            {/* <img className="w-full md:w-max mx-auto" src="/images/prizes-won.svg" alt="prizes to be won" /> */}
             {/* {isLoading ? ( */}
               {/* <div className="my-20 flex flex-col items-center justify-center">
                 <img className='w-10 h-10 mx-auto' src="/icons/spinner-neon.svg" alt="Loading" />
@@ -81,8 +85,10 @@ const Home: React.FC = () => {
             )
             } */}
 
-            <div className="mx-auto text-center mt-10 max-md:mb-16">
-              <p>PLAY TO WIN AMAZING PRIZES, NOW!</p>
+            <div className="mx-auto text-center mt-20 max-md:mb-16">
+              {/* <p>PLAY TO WIN AMAZING PRIZES, NOW!</p> */}
+              <p>PLAY FASTEST FINGER!</p>
+
               <FFButton text="Play Now" className="md:w-2/3" onClick={toggleModal} />
             </div>
           </div>
