@@ -78,7 +78,7 @@ const Play: React.FC<{ onClose: () => void }> = ({ onClose }) => {
 
         getQuestions();
     }, [token, msisdn, questionCount]);
-
+console.log(setQuestionCount);
 
     const handleLetterSelect = (index: number) => {
         const letter = availableLetters[index];
