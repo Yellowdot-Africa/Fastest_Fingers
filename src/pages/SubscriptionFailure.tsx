@@ -4,11 +4,15 @@ import { useEffect } from "react";
 const SubscriptionFailure: React.FC  = () => {
   // const navigate = useNavigate();
 
+ 
   // useEffect(() => {
+   
+
   //   setTimeout(() => {
-  //     navigate("/"); 
+  //     navigate("/subscribe"); 
   //   }, 8000); 
   // }, [navigate]);
+
 
   useEffect(() => {
     setTimeout(() => {
@@ -26,3 +30,8 @@ const SubscriptionFailure: React.FC  = () => {
 };
 
 export default SubscriptionFailure;
+
+
+
+
+
