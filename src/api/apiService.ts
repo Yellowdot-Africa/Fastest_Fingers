@@ -6,6 +6,7 @@ import {  UserProfile } from "../types";
 // const API_BASE_URL_6001 = "https://ydvassdp.com:6001";
 // const API_BASE_URL_69 = "http://69.197.174.10:8093"; 
 const API_BASE_URL_69 = "/another-api";
+const API_BASE_URL_10="https://69.197.174.10:8120"
 const API_BASE_URL_fastestfingers = "https://fastestfingers.runasp.net";
 
 
@@ -70,7 +71,6 @@ async function apiRequest<T>(
 
 export async function loginUser(username: string, password: string): Promise<string | null> {
   // console.log("Calling login API...");
-
   return apiRequest<{data: { jwtToken: string }}>(
     API_BASE_URL_fastestfingers,
     '/api/FastestFingers/Authorization/Login',
@@ -193,15 +193,34 @@ export async function updateLeaderboard(msisdn: string, gameScore: number, token
 //   });
 // }
 
+// export async function checkSubscriptionStatus(msisdn: string): Promise<{ isSuccessful: boolean; message: string; data: { isActive: boolean } }> {
+//   return apiRequest<{ isSuccessful: boolean; message: string; data: { isActive: boolean } }>(
+//     API_BASE_URL_10,
+//     `/api/DataSync/CheckActiveSubscription?msisdn=${msisdn}`,
+//     'GET'
+//   ).catch(error => {
+//     throw new Error(handleError(error));
+//   });
+// }
+
 export async function checkSubscriptionStatus(msisdn: string): Promise<{ isSuccessful: boolean; message: string; data: { isActive: boolean } }> {
-  return apiRequest<{ isSuccessful: boolean; message: string; data: { isActive: boolean } }>(
-    API_BASE_URL_69,
-    `/api/DataSync/CheckActiveSubscription?msisdn=${msisdn}`,
-    'GET'
-  ).catch(error => {
-    throw new Error(handleError(error));
-  });
+  try {
+      const response = await apiRequest<{ isSuccessful: boolean; message: string; data: { isActive: boolean } }>(
+          API_BASE_URL_10,
+          `/api/DataSync/CheckActiveSubscription?msisdn=${msisdn}`,
+          'GET'
+      );
+
+      console.log("Subscription API Response:", response); // Debug log
+      return response;
+  } catch (error) {
+      console.error("Subscription API Error:", error);
+      throw new Error(handleError(error));
+  }
 }
+
+
+
 
 
 // Fetch Prizes by Country

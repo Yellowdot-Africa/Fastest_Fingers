@@ -1,4 +1,4 @@
-import React from "react";
+import React,  { useEffect, useState }  from "react";
 import FFButton from "../components/common/FFButton";
 // import SubscribeModal from '../components/modals/SubscribeModal';
 // import { fetchPrizesByCountry } from '../api/apiService';

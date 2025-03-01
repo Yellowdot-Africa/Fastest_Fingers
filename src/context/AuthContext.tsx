@@ -32,6 +32,8 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     useEffect(() => {
         const tokenExpirationTime = sessionStorage.getItem('tokenExpirationTime');
         if (tokenExpirationTime && new Date().getTime() > parseInt(tokenExpirationTime, 10)) {
+            console.warn("Token expired, logging out...");
+
             logout();
         }
     }, []);
@@ -101,3 +103,6 @@ export const useAuth = () => {
 
 
 
+
+
+  
