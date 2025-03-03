@@ -1,5 +1,2 @@
-/api/*   https://ydvassdp.com:2001/api/:splat   200
-
-/another-api/*   http://69.197.174.10:8093/:splat   200
 
 /*   /index.html   200
