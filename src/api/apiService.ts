@@ -195,6 +195,8 @@ export async function updateLeaderboard(msisdn: string, gameScore: number, token
 export async function checkSubscriptionStatus(msisdn: string): Promise<{ isSuccessful: boolean; message: string; data: { isActive: boolean } }> {
   return apiRequest<{ isSuccessful: boolean; message: string; data: { isActive: boolean } }>(
     API_BASE_URL_fastestfingers,
+        // `/api/DataSync/CheckActiveSubscription?msisdn=${msisdn}`,
+
     `/api/FastestFingers/Subscription/CheckActiveSubscription?msisdn=${msisdn}`,
     'GET',
   ).catch(error => {
