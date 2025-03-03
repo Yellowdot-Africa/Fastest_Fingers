@@ -30,7 +30,7 @@ const Play: React.FC<{ onClose: () => void }> = ({ onClose }) => {
     const [selectedLetters, setSelectedLetters] = useState<string[]>([]);
     const [availableLetters, setAvailableLetters] = useState<string[]>([]);
     const [selectedIndices, setSelectedIndices] = useState<number[]>([]);
-    const [timer, setTimer] = useState(15);
+    const [timer, setTimer] = useState(30);
     const [showWinningModal, setShowWinningModal] = useState(false);
     const [question, setQuestion] = useState<GameQuestion | null>(null);
     const [timeUsed, setTimeUsed] = useState<number>(0);
@@ -121,7 +121,7 @@ console.log(setQuestionCount);
 
     const submitGame = async () => {
         setIsLoading(true);
-        setTimeUsed(15 - timer); // Calculate time used
+        setTimeUsed(30 - timer); // Calculate time used
         if (question && msisdn) {
             const submittedAnswer = selectedLetters.join('').toLowerCase();
             const response = await submitGamePlay(msisdn, question.id, submittedAnswer, hintUsed, timeUsed, token);
@@ -156,7 +156,7 @@ console.log(setQuestionCount);
                 setAvailableLetters(generateAvailableLetters(response.data[0].text));
                 setSelectedLetters(Array(response.data[0].text.length).fill(''));
                 setSelectedIndices([]);
-                setTimer(15);
+                setTimer(30);
                 setShowWinningModal(false);
                 setHintUsed(false);
             }
