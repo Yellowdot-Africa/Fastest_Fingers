@@ -194,13 +194,18 @@ export async function updateLeaderboard(msisdn: string, gameScore: number, token
 
 export async function checkSubscriptionStatus(msisdn: string): Promise<{ isSuccessful: boolean; message: string; data: { isActive: boolean } }> {
   return apiRequest<{ isSuccessful: boolean; message: string; data: { isActive: boolean } }>(
-    API_BASE_URL_69,
-    `/api/DataSync/CheckActiveSubscription?msisdn=${msisdn}`,
-    'GET'
+    API_BASE_URL_fastestfingers,
+    // `/api/DataSync/CheckActiveSubscription?msisdn=${msisdn}`,
+    `/api/FastestFingers/Subscription/CheckActiveSubscription?msisdn=${msisdn}`,
+    'GET',
   ).catch(error => {
     throw new Error(handleError(error));
   });
 }
+
+
+
+
 
 // export async function checkSubscriptionStatus(msisdn: string): Promise<{ isSuccessful: boolean; message: string; data: { isActive: boolean } }> {
 //   try {
