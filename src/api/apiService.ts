@@ -5,8 +5,8 @@ import {  UserProfile } from "../types";
 // const API_BASE_URL_2001 = "https://ydvassdp.com:2001";
 // const API_BASE_URL_6001 = "https://ydvassdp.com:6001";
 // const API_BASE_URL_69 = "http://69.197.174.10:8093"; 
-// const API_BASE_URL_69 = "/another-api";
-const API_BASE_URL_10="https://69.197.174.10:8120"
+const API_BASE_URL_69 = "/another-api";
+// const API_BASE_URL_10="https://69.197.174.10:8120"
 const API_BASE_URL_fastestfingers = "https://fastestfingers.runasp.net";
 
 
@@ -211,7 +211,6 @@ export async function checkSubscriptionStatus(msisdn: string): Promise<{ isSucce
           'GET'
       );
 
-      console.log("Subscription API Response:", response); // Debug log
       return response;
   } catch (error) {
       console.error("Subscription API Error:", error);
