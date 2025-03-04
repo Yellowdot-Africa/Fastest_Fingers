@@ -44,14 +44,12 @@ const Subscribe: React.FC = () => {
 
       <div className="w-full md:w-max mx-auto">
         {/* <img className="w-full md:w-max mx-auto" src="/images/prizes-won.svg" alt="prizes to be won" /> */}
-        <img
-          className="w-full md:w-max mx-auto mt-28"
-          src="/images/FFlogo.svg"
-          alt="prizes to be won"
-        />
+        <h1 className="bg-[#F9F9F9] rounded-lg shadow-lg text-[46px] text-[#007880] px-6 py-8 text-center font-semibold mt-28 h-[50%]">
+              FastestFinger
+            </h1>
 
-        <h1 className="text-ffgray text-[20px] text-center font-semibold my-2 italic">
-          Play for fun,Play for cash
+        <h1 className="text-ffgray text-[18px] text-center font-semibold my-2 italic">
+        The Thrill of the Fastest Minds!
         </h1>
 
         {/* {isLoading ? (
@@ -77,14 +75,14 @@ const Subscribe: React.FC = () => {
 
         <div className="mx-auto text-center mt-20">
           {/* <p>PLAY TO WIN AMAZING PRIZES, NOW!</p> */}
-          <p>PLAY FASTEST FINGER!</p>
+          <p>Join the Challenge – Play Now!</p>
 
           {/* <FFButton text="Subscribe To Plan" className="md:w-2/3" onClick={toggleSubscribeModal} /> */}
           <FFButton
             text="Subscribe To Plan"
             className="md:w-2/3"
             onClick={() =>
-              (window.location.href = "https://ydtelecel-sdp.netlify.app")
+              (window.location.href = "https://vas-fastest-finger.netlify.app/")
             }
           />
         </div>

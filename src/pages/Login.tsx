@@ -174,7 +174,7 @@ const Login: React.FC = () => {
       // }
 
       const subscriptionStatus = await checkSubscriptionStatus(cleanMsisdn);
-      if (!subscriptionStatus.data.isActive) {
+      if (!subscriptionStatus?.data?.isActive) {
         console.error("User does not have an active subscription.");
         setIsSubscribed(false);
         setError("Hello, You are currently not subscribed to Fastest Finger.");
