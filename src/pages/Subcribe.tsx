@@ -75,7 +75,7 @@ const Subscribe: React.FC = () => {
 
         <div className="mx-auto text-center mt-20">
           {/* <p>PLAY TO WIN AMAZING PRIZES, NOW!</p> */}
-          <p>Join the Challenge – Play Now!</p>
+          {/* <p>Join the Challenge – Play Now!</p> */}
 
           {/* <FFButton text="Subscribe To Plan" className="md:w-2/3" onClick={toggleSubscribeModal} /> */}
           <FFButton
