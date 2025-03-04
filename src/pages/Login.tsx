@@ -229,7 +229,8 @@ const Login: React.FC = () => {
             htmlFor="phone"
             className="block text-left text-xs italic mb-2 text-ffgray/70"
           >
-            Phone Number Input
+            Please enter your phone number
+            {/* Phone Number Input */}
           </label>
           <PhoneInput
             international

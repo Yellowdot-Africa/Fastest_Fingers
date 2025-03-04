@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import FFButton from "../common/FFButton";
 import { ModalProps } from "../../types";
 import { useNavigate } from "react-router-dom";
@@ -18,15 +18,26 @@ const WinningModal: React.FC<WinningModalProps> = ({
   message,
 }) => {
   const navigate = useNavigate();
-//   const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   if (!isVisible) return null;
 
-  const handlePlayAgain = () => {
-    onPlayAgain();
-  };
+//   const handlePlayAgain = () => {
+//     setLoading(true);
+//     onPlayAgain();
+//   };
 
-    
+//   const handlePlayAgain = async () => {
+//     setLoading(true);
+//     await onPlayAgain(); // Ensure it finishes
+//     setLoading(false); // Reset loading after completion
+// };
+
+const handlePlayAgain = async () => {
+    setLoading(true);
+    await Promise.resolve(onPlayAgain());
+    setLoading(false);
+};
 
   const formatTime = (seconds: number) => {
     const minutes = Math.floor(seconds / 60);
@@ -47,9 +58,13 @@ const WinningModal: React.FC<WinningModalProps> = ({
             Time: <span className="text-teal">{formatTime(timeUsed)}</span>
           </p>
 
-          <FFButton text="Play Again" className="md:w-5/6" onClick={handlePlayAgain} />
-         
-
+          <FFButton
+            text="Play Again"
+            loading={loading}
+            // disabled={loading}
+            className="md:w-5/6"
+            onClick={handlePlayAgain}
+          />
 
           <FFButton
             text="Home"
