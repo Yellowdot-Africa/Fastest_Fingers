@@ -22,16 +22,7 @@ const WinningModal: React.FC<WinningModalProps> = ({
 
   if (!isVisible) return null;
 
-//   const handlePlayAgain = () => {
-//     setLoading(true);
-//     onPlayAgain();
-//   };
 
-//   const handlePlayAgain = async () => {
-//     setLoading(true);
-//     await onPlayAgain(); // Ensure it finishes
-//     setLoading(false); // Reset loading after completion
-// };
 
 const handlePlayAgain = async () => {
     setLoading(true);
