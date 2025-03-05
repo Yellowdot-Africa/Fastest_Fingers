@@ -45,20 +45,20 @@ const Play: React.FC<{ onClose: () => void }> = ({ onClose }) => {
   const { token, msisdn } = useAuth();
   const [questionCount, setQuestionCount] = useState<number>(20);
 
-//   useEffect(() => {
-//     countdownRef.current = setInterval(() => {
-//       if (timer > 0) {
-//         setTimer(timer - 1);
-//       } else {
-//         clearInterval(countdownRef.current);
-//         handleTimeOut(); // Submit the game when the timer runs out
-//       }
-//     }, 1000);
+  //   useEffect(() => {
+  //     countdownRef.current = setInterval(() => {
+  //       if (timer > 0) {
+  //         setTimer(timer - 1);
+  //       } else {
+  //         clearInterval(countdownRef.current);
+  //         handleTimeOut(); // Submit the game when the timer runs out
+  //       }
+  //     }, 1000);
 
-//     return () => clearInterval(countdownRef.current);
-//   }, [timer]);
+  //     return () => clearInterval(countdownRef.current);
+  //   }, [timer]);
 
-useEffect(() => {
+  useEffect(() => {
     if (question) {
       clearInterval(countdownRef.current);
       countdownRef.current = window.setInterval(() => {
@@ -73,10 +73,9 @@ useEffect(() => {
         });
       }, 1000);
     }
-  
+
     return () => clearInterval(countdownRef.current);
   }, [question]);
-  
 
   useEffect(() => {
     const getQuestions = async () => {
@@ -278,12 +277,23 @@ useEffect(() => {
                     {letter}
                   </button>
                 ))}
+                <button
+                  className="p-2.5 w-[50%] shadow-dark capitalize rounded text-center text-teal font-bold text-[22px] mt-2 bg-white"
+                  onClick={() => {
+                    setSelectedLetters(
+                      Array(question?.text.length || 0).fill("")
+                    );
+                    setSelectedIndices([]);
+                  }}
+                >
+                  Clear
+                </button>
               </div>
             </div>
 
-            <button
+            {/* <button
               onClick={handleClearOrSubmit}
-              className={`max-sm:mb-20 my-8 w-full text-white px-4 py-3.5 rounded-3xl ${
+              className={`max-sm:mb-20 my-8 w-full text-black px-4 py-3.5 rounded-3xl ${
                 selectedLetters.every((letter) => letter === "") || isLoading
                   ? "bg-[#CCCCCC] cursor-not-allowed"
                   : isAllSelected
@@ -303,9 +313,28 @@ useEffect(() => {
               ) : isAllSelected ? (
                 "Submit"
               ) : (
-                "Clear"
+                "Cancel"
               )}
-            </button>
+            </button> */}
+            <button
+  onClick={handleClearOrSubmit}
+  className={`max-sm:mb-20 my-8 w-full text-white px-4 py-3.5 rounded-3xl 
+    ${selectedLetters.every((letter) => letter === "") || isLoading ? 
+      "bg-[#CCCCCC] cursor-not-allowed" : 
+      "bg-teal"
+    }`}
+  disabled={selectedLetters.every((letter) => letter === "") || isLoading}
+>
+  {isLoading ? (
+    <img
+      className="w-6 h-6 mx-auto"
+      src="/icons/spinner-white.svg"
+      alt="Loading"
+    />
+  ) : (
+    "Submit"
+  )}
+</button>
           </>
         )}
       </div>
@@ -330,7 +359,3 @@ useEffect(() => {
 };
 
 export default Play;
-
-
-
-

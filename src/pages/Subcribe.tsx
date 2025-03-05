@@ -44,11 +44,11 @@ const Subscribe: React.FC = () => {
 
       <div className="w-full md:w-max mx-auto">
         {/* <img className="w-full md:w-max mx-auto" src="/images/prizes-won.svg" alt="prizes to be won" /> */}
-        <h1 className="bg-[#F9F9F9] rounded-lg shadow-lg text-[46px] text-[#007880] px-6 py-8 text-center font-semibold mt-28 h-[50%]">
-              FastestFinger
+        <h1 className="bg-[#F9F9F9] rounded-lg shadow-lg text-[46px] text-[#007880] mx-auto px-6 py-6 text-center font-semibold mt-28 w-[90%] h-[50%]">
+              Fastest <span>Finger</span> 
             </h1>
 
-        <h1 className="text-ffgray text-[18px] text-center font-semibold my-2 italic">
+        <h1 className="text-ffgray text-[18px] text-center font-semibold my-3 italic">
         The Thrill of the Fastest Minds!
         </h1>
 

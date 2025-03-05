@@ -64,10 +64,10 @@ const Home: React.FC = () => {
 
           <div className="w-full md:w-max mx-auto">
             {/* <img className="w-full md:w-max mx-auto mt-28" src="/images/FFlogo.svg" alt="prizes to be won" /> */}
-            <h1 className="bg-[#F9F9F9] rounded-lg shadow-lg text-[46px] text-[#007880] px-6 py-8 text-center font-semibold mt-28 h-[50%]">
-              FastestFinger
+            <h1 className="bg-[#F9F9F9] rounded-lg shadow-lg text-[46px] text-[#007880] mx-auto text-center font-semibold px-6 py-6 mt-28 w-[90%] h-[50%]">
+              FASTEST <span>FINGERS</span> 
             </h1>
-            <h1 className="text-ffgray text-[18px] text-center font-semibold my-2 italic">
+            <h1 className="text-ffgray text-[18px] text-center font-semibold my-3 italic">
               {/* Play for fun,Play for cash */}
               The Thrill of the Fastest Minds!
             </h1>
@@ -121,3 +121,8 @@ const Home: React.FC = () => {
 };
 
 export default Home;
+
+
+
+
+
