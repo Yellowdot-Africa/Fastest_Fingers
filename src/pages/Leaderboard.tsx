@@ -74,7 +74,7 @@ const Leaderboard: React.FC = () => {
             {leaderboardData.length === 0 ? (
                 <div className='text-center mt-10'>
                     {/* <p>Nothing to display</p> */}
-                    <p>Updating rankings, please wait...</p>
+                    <p>Who's Leading? Let's find out???</p>
                 </div>
             ) : (
                 <div className='max-w-[450px] mx-auto relative'>
