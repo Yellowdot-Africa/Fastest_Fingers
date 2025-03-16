@@ -1,11 +1,13 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 // import TextInput from '../components/common/TextInput';
-// import { useAuth } from '../context/AuthContext';
+import { useAuth } from '../context/AuthContext';
 // import { getUserProfile, saveUserProfile } from '../api/apiService';
 // import { UserProfile } from '../types';
+// import { UnsubscribeResponse } from '../types';
+
 // import ErrorModal from '../components/modals/ErrorModal';
 // import { saveUserProfile } from '../api/apiService';
-
+import  {unsubscribeUser} from "../api/apiService";
 // interface BankInfo {
 //     accountName: string;
 //     accountNumber: string;
@@ -13,15 +15,20 @@ import React, { useState } from 'react';
 // }
 
 interface SubscriptionEntry {
-    id: number;
-    plan: string;
-    date: string;
+  id: number;
+  plan: string;
+  date: string;
 }
 
-  const Settings: React.FC = () => {
-    // const { token, msisdn, profile, setProfile } = useAuth();
-    // console.log(msisdn)
-    const [openSection, setOpenSection] = useState<string>('');
+const Settings: React.FC = () => {
+  // const { token, msisdn, profile, setProfile } = useAuth();
+  const { msisdn } = useAuth();
+
+  // console.log(msisdn)
+  const [openSection, setOpenSection] = useState<string>("");
+  const [responseMessage, setResponseMessage] = useState<string | null>(null);
+  const [isError, setIsError] = useState<boolean>(false);
+
   //   const [isEditing, setIsEditing] = useState(false);
   //   const [loading, setLoading] = useState(false);
   //   const [confirmText, setConfirmText] = useState(' ');
@@ -41,20 +48,26 @@ interface SubscriptionEntry {
   //     }
   // }, [profile]);
 
-    const subscriptionData: SubscriptionEntry[] = Array.from({ length: 50 }, (_, i) => ({
-        id: i + 1,
-        plan: "GH¢0.50/day",
-        date: "02/07/2024"
-    }));
-    const [currentPage, setCurrentPage] = useState(1);
-    const entriesPerPage = 10;
-    const indexOfLastEntry = currentPage * entriesPerPage;
-    const indexOfFirstEntry = indexOfLastEntry - entriesPerPage;
-    const currentEntries = subscriptionData.slice(indexOfFirstEntry, indexOfLastEntry);
-    const totalPages = Math.ceil(subscriptionData.length / entriesPerPage);
+  const subscriptionData: SubscriptionEntry[] = Array.from(
+    { length: 50 },
+    (_, i) => ({
+      id: i + 1,
+      plan: "GH¢0.50/day",
+      date: "02/07/2024",
+    })
+  );
+  const [currentPage, setCurrentPage] = useState(1);
+  const entriesPerPage = 10;
+  const indexOfLastEntry = currentPage * entriesPerPage;
+  const indexOfFirstEntry = indexOfLastEntry - entriesPerPage;
+  const currentEntries = subscriptionData.slice(
+    indexOfFirstEntry,
+    indexOfLastEntry
+  );
+  const totalPages = Math.ceil(subscriptionData.length / entriesPerPage);
 
   const toggleSection = (section: string) => {
-    setOpenSection(openSection === section ? '' : section);
+    setOpenSection(openSection === section ? "" : section);
     // setIsEditing(false);
   };
 
@@ -99,6 +112,47 @@ interface SubscriptionEntry {
   //   const closeErrorModal = () => {
   //       setError('');
   //   };
+
+  const handleUnsubscribe = async (msisdn?: string) => {
+    if (!msisdn) {
+      setResponseMessage("User not found. Please log in again.");
+      setIsError(true);
+      setTimeout(() => setResponseMessage(""), 5000);
+
+      return;
+    }
+    try {
+      const result = await unsubscribeUser(msisdn);
+  
+      if (result.isSuccessful) {
+        setResponseMessage(result.message || "Successfully unsubscribed.");
+
+        setIsError(false);
+
+      } else {
+        setResponseMessage(result.message || result?.data?.message || "Subscription could not be found.");
+        setIsError(true);
+
+      }
+    } catch (error: any) {
+      console.error("Error:", error);
+
+      const errorMessage =
+      error?.response?.data?.message || 
+      error?.message || 
+      "Something went wrong. Please try again.";
+
+      setResponseMessage(errorMessage);
+      setIsError(true);
+
+    }
+    setTimeout(() => setResponseMessage(""), 5000);
+
+  };
+  
+
+  
+  
 
   return (
     <div>
@@ -168,38 +222,71 @@ interface SubscriptionEntry {
             </div>
           )}
         </div> */}
-        <div className='md:w-3/5 mx-auto'>
+        <div className="md:w-3/5 mx-auto">
           <button
             className="w-full flex justify-between items-center p-4 bg-[#F9F9F9] rounded-md border-b text-ffgray/80"
-            onClick={() => toggleSection('subscriptionHistory')}
+            onClick={() => toggleSection("subscriptionHistory")}
           >
-            <div className='flex items-center gap-3'>
-              <img src="/icons/ph_film-script-bold.svg" alt='history' />
+            <div className="flex items-center gap-3">
+              <img src="/icons/ph_film-script-bold.svg" alt="history" />
               <span className="font-bold">Subscription History</span>
             </div>
-            <span className='text-teal'>{openSection === 'subscriptionHistory' ? '▲' : '▼'}</span>
+            <span className="text-teal">
+              {openSection === "subscriptionHistory" ? "▲" : "▼"}
+            </span>
           </button>
-          {openSection === 'subscriptionHistory' && (
+          {openSection === "subscriptionHistory" && (
             <div className="p-4 bg-[#F9F9F9] max-md:shadow-custom md:text-lg">
               {currentEntries.map((entry, index) => (
                 <div key={entry.id} className="flex justify-between my-4">
                   <div>
-                    <span className='italic mr-8'>{index + 1}.</span>
-                    <span className=''>{entry.plan}</span>
+                    <span className="italic mr-8">{index + 1}.</span>
+                    <span className="">{entry.plan}</span>
                   </div>
-                  <span className='text-teal'>{entry.date}</span>
+                  <span className="text-teal">{entry.date}</span>
                 </div>
               ))}
-   
+
               <div className="flex justify-between items-center mt-4">
-                <button className='text-teal font-bold' onClick={() => setCurrentPage(currentPage - 1)} disabled={currentPage === 1}>Previous</button>
-                <span>{currentPage}/{totalPages}</span>
-                <button className='text-teal font-bold' onClick={() => setCurrentPage(currentPage + 1)} disabled={currentPage === totalPages}>Next</button>
+                <button
+                  className="text-teal font-bold"
+                  onClick={() => setCurrentPage(currentPage - 1)}
+                  disabled={currentPage === 1}
+                >
+                  Previous
+                </button>
+                <span>
+                  {currentPage}/{totalPages}
+                </span>
+                <button
+                  className="text-teal font-bold"
+                  onClick={() => setCurrentPage(currentPage + 1)}
+                  disabled={currentPage === totalPages}
+                >
+                  Next
+                </button>
               </div>
             </div>
           )}
         </div>
+        <div className="flex justify-center mt-6">
+          <button
+            className="bg-[#007880] text-white px-4 py-2 rounded-lg font-bold"
+            // onClick={handleUnsubscribe}
+            onClick={() => handleUnsubscribe(msisdn)}
+
+          >
+            Unsubscribe from Service
+          </button>
+        
+        </div>
+        {responseMessage && (
+        <p className={`mt-2 p-2 rounded text-center ${isError ? "bg-red-100 text-red-600" : "bg-green-100 text-green-600"}`}>
+          {responseMessage}
+        </p>
+      )}
       </div>
+
       {/* <ErrorModal isVisible={!!error} message={error} onClose={closeErrorModal} /> */}
     </div>
   );

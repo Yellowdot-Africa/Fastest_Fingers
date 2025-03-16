@@ -5,8 +5,9 @@ import {  UserProfile } from "../types";
 // const API_BASE_URL_2001 = "https://ydvassdp.com:2001";
 // const API_BASE_URL_6001 = "https://ydvassdp.com:6001";
 // const API_BASE_URL_69 = "/another-api";
-const API_BASE_URL_fastestfingers = "https://fastestfingers.runasp.net";
-
+// const API_BASE_URL_fastestfingers = "https://fastestfingers.runasp.net";
+const API_BASE_URL_fastestfingers = "https://fastestfingers.ydaplatform.com:8177";
+const API_BASE_URL_telecelgh = "https://telecelgh.ydaplatform.com:8170";
 
 // error handler
 const handleError = (error: any) => {
@@ -202,6 +203,21 @@ export async function checkSubscriptionStatus(msisdn: string): Promise<{ isSucce
     throw new Error(handleError(error));
   });
 }
+
+
+export async function unsubscribeUser(msisdn: string): Promise<{
+  data: any; isSuccessful: boolean; message: string 
+}> {
+  return apiRequest<{ isSuccessful: boolean; message: string; data:any }>(
+    API_BASE_URL_telecelgh,
+    `/api/Subscription/CancelSubscription?msisdn=${msisdn}`,
+    'POST'
+  ).catch(error => {
+    throw new Error(handleError(error));
+  });
+}
+
+
 
 
 

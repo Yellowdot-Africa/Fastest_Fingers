@@ -29,3 +29,11 @@ export interface Prize {
 export interface PrizeResponse {
     data: Prize[];
 }
+
+
+export interface UnsubscribeResponse {
+    isSuccessful: boolean;
+    message: string;
+    data?: any; 
+  }
+  
