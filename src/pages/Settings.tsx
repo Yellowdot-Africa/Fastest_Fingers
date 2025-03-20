@@ -1,13 +1,13 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 // import TextInput from '../components/common/TextInput';
-import { useAuth } from '../context/AuthContext';
+import { useAuth } from "../context/AuthContext";
 // import { getUserProfile, saveUserProfile } from '../api/apiService';
 // import { UserProfile } from '../types';
 // import { UnsubscribeResponse } from '../types';
 
 // import ErrorModal from '../components/modals/ErrorModal';
 // import { saveUserProfile } from '../api/apiService';
-import  {unsubscribeUser} from "../api/apiService";
+import { unsubscribeUser } from "../api/apiService";
 // interface BankInfo {
 //     accountName: string;
 //     accountNumber: string;
@@ -22,12 +22,22 @@ interface SubscriptionEntry {
 
 const Settings: React.FC = () => {
   // const { token, msisdn, profile, setProfile } = useAuth();
-  const { msisdn } = useAuth();
+  const { msisdn, isSubscribed, setIsSubscribed  } = useAuth();
 
   // console.log(msisdn)
   const [openSection, setOpenSection] = useState<string>("");
   const [responseMessage, setResponseMessage] = useState<string | null>(null);
   const [isError, setIsError] = useState<boolean>(false);
+
+
+
+  useEffect(() => {
+    if (!isSubscribed) {
+      console.log("isSubscribed state changed to false. Redirecting...");
+      window.location.href = "https://vas-fastest-finger.netlify.app/";
+    }
+  }, [isSubscribed]); 
+
 
   //   const [isEditing, setIsEditing] = useState(false);
   //   const [loading, setLoading] = useState(false);
@@ -113,6 +123,7 @@ const Settings: React.FC = () => {
   //       setError('');
   //   };
 
+
   const handleUnsubscribe = async (msisdn?: string) => {
     if (!msisdn) {
       setResponseMessage("User not found. Please log in again.");
@@ -121,38 +132,57 @@ const Settings: React.FC = () => {
 
       return;
     }
+
     try {
       const result = await unsubscribeUser(msisdn);
-  
+
       if (result.isSuccessful) {
+      //   setResponseMessage(result.message || "Successfully unsubscribed.");
+
+      //   setIsError(false);
+      // } else if (result.data?.errorCode === "5201005") {
+      //   // User is already unsubscribed
+      //   console.log("No active subscription found.");
+      //   setIsSubscribed(false);
+      //   sessionStorage.setItem("isSubscribed", "false");
+
+      //   setTimeout(() => {
+      //     window.location.href = "https://vas-fastest-finger.netlify.app/";
+      //   }, 1000);
+      if (result.message.includes("Subscription successfully canceled")) {
+        console.log("Subscription canceled. Redirecting to subscription page...");
         setResponseMessage(result.message || "Successfully unsubscribed.");
+          setIsError(false);
 
-        setIsError(false);
+        setIsSubscribed(false);
+        sessionStorage.setItem("isSubscribed", "false");
 
+        setTimeout(() => {
+          window.location.href = "https://vas-fastest-finger.netlify.app/";
+        }, 1000);
+      }
+      
       } else {
-        setResponseMessage(result.message || result?.data?.message || "Subscription could not be found.");
+        setResponseMessage(
+          result.message ||
+            result?.data?.message ||
+            "Subscription could not be found."
+        );
         setIsError(true);
-
       }
     } catch (error: any) {
       console.error("Error:", error);
 
       const errorMessage =
-      error?.response?.data?.message || 
-      error?.message || 
-      "Something went wrong. Please try again.";
+        error?.response?.data?.message ||
+        error?.message ||
+        "Something went wrong. Please try again.";
 
       setResponseMessage(errorMessage);
       setIsError(true);
-
     }
     setTimeout(() => setResponseMessage(""), 5000);
-
   };
-  
-
-  
-  
 
   return (
     <div>
@@ -272,19 +302,22 @@ const Settings: React.FC = () => {
         <div className="flex justify-center mt-6">
           <button
             className="bg-[#007880] text-white px-4 py-2 rounded-lg font-bold"
-            // onClick={handleUnsubscribe}
             onClick={() => handleUnsubscribe(msisdn)}
-
           >
             Unsubscribe from Service
           </button>
-        
         </div>
         {responseMessage && (
-        <p className={`mt-2 p-2 rounded text-center ${isError ? "bg-red-100 text-red-600" : "bg-green-100 text-green-600"}`}>
-          {responseMessage}
-        </p>
-      )}
+          <p
+            className={`mt-2 p-2 rounded text-center ${
+              isError
+                ? "bg-red-100 text-red-600"
+                : "bg-green-100 text-green-600"
+            }`}
+          >
+            {responseMessage}
+          </p>
+        )}
       </div>
 
       {/* <ErrorModal isVisible={!!error} message={error} onClose={closeErrorModal} /> */}
@@ -293,3 +326,7 @@ const Settings: React.FC = () => {
 };
 
 export default Settings;
+
+
+
+
