@@ -82,7 +82,7 @@ const Subscribe: React.FC = () => {
             text="Subscribe To Plan"
             className="md:w-2/3"
             onClick={() =>
-              (window.location.href = "https://vas-fastest-finger.netlify.app/")
+              (window.location.href = "https://vas-fastest-finger-subscribe.netlify.app/")
             }
           />
         </div>

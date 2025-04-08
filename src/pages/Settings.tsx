@@ -152,7 +152,7 @@ const Settings: React.FC = () => {
         sessionStorage.setItem("isSubscribed", "false");
 
         setTimeout(() => {
-          window.location.href = "https://vas-fastest-finger.netlify.app/";
+          window.location.href = "https://vas-fastest-finger-subscribe.netlify.app/";
         }, 1000);
       }
       
