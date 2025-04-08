@@ -126,10 +126,10 @@ const Settings: React.FC = () => {
 
   const handleUnsubscribe = async (msisdn?: string) => {
     if (!msisdn) {
-      // setResponseMessage("User not found. Please log in again.");
-      // setIsError(true);
-      // setTimeout(() => setResponseMessage(""), 5000);
-      logout();
+      setResponseMessage("User not found. Please log in again.");
+      setIsError(true);
+      setTimeout(() => setResponseMessage(""), 5000);
+      // logout();
       return;
     }
 
@@ -318,8 +318,4 @@ export default Settings;
 
 
 
-
-function logout() {
-  throw new Error("Function not implemented.");
-}
 
