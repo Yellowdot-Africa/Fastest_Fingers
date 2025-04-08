@@ -4,6 +4,7 @@ import { useAuth } from "../context/AuthContext";
 // import { getUserProfile, saveUserProfile } from '../api/apiService';
 // import { UserProfile } from '../types';
 // import { UnsubscribeResponse } from '../types';
+import { useNavigate } from 'react-router-dom';
 
 // import ErrorModal from '../components/modals/ErrorModal';
 // import { saveUserProfile } from '../api/apiService';
@@ -23,6 +24,7 @@ interface SubscriptionEntry {
 const Settings: React.FC = () => {
   // const { token, msisdn, profile, setProfile } = useAuth();
   const { msisdn, isSubscribed, setIsSubscribed  } = useAuth();
+  const navigate = useNavigate();
 
   // console.log(msisdn)
   const [openSection, setOpenSection] = useState<string>("");
@@ -126,10 +128,13 @@ const Settings: React.FC = () => {
 
   const handleUnsubscribe = async (msisdn?: string) => {
     if (!msisdn) {
-      setResponseMessage("User not found. Please log in again.");
-      setIsError(true);
-      setTimeout(() => setResponseMessage(""), 5000);
-      // logout();
+      // setResponseMessage("User not found. Please log in again.");
+      // setIsError(true);
+      // setTimeout(() => setResponseMessage(""), 5000);
+      logout();
+      setTimeout(() => {
+        navigate('/login');  
+    }, 500);
       return;
     }
 
@@ -318,4 +323,8 @@ export default Settings;
 
 
 
+
+function logout() {
+  throw new Error("Function not implemented.");
+}
 

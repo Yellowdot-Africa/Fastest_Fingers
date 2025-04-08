@@ -1,6 +1,5 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { UserProfile } from '../types';
-// import { useNavigate } from 'react-router-dom';
 
 
 interface AuthContextType {
@@ -30,7 +29,6 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         return profileData ? JSON.parse(profileData) : null;
     });
     const [isSubscribed, setIsSubscribed] = useState<boolean>(() => sessionStorage.getItem('isSubscribed') === 'true');
-// const navigate = useNavigate();
     useEffect(() => {
         const tokenExpirationTime = sessionStorage.getItem('tokenExpirationTime');
         if (tokenExpirationTime && new Date().getTime() > parseInt(tokenExpirationTime, 10)) {
@@ -85,7 +83,6 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         setMsisdn('');
         setProfile(null);
         setIsSubscribed(false);
-        // navigate('/login'); 
     };
 
     return (
