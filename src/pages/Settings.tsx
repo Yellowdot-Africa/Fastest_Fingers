@@ -126,10 +126,10 @@ const Settings: React.FC = () => {
 
   const handleUnsubscribe = async (msisdn?: string) => {
     if (!msisdn) {
-      setResponseMessage("User not found. Please log in again.");
-      setIsError(true);
-      setTimeout(() => setResponseMessage(""), 5000);
-
+      // setResponseMessage("User not found. Please log in again.");
+      // setIsError(true);
+      // setTimeout(() => setResponseMessage(""), 5000);
+      logout();
       return;
     }
 
@@ -137,18 +137,7 @@ const Settings: React.FC = () => {
       const result = await unsubscribeUser(msisdn);
 
       if (result.isSuccessful) {
-      //   setResponseMessage(result.message || "Successfully unsubscribed.");
-
-      //   setIsError(false);
-      // } else if (result.data?.errorCode === "5201005") {
-      //   // User is already unsubscribed
-      //   console.log("No active subscription found.");
-      //   setIsSubscribed(false);
-      //   sessionStorage.setItem("isSubscribed", "false");
-
-      //   setTimeout(() => {
-      //     window.location.href = "https://vas-fastest-finger.netlify.app/";
-      //   }, 1000);
+     
       if (result.message.includes("Subscription successfully canceled")) {
         console.log("Subscription canceled. Redirecting to subscription page...");
         setResponseMessage(result.message || "Successfully unsubscribed.");
@@ -329,4 +318,8 @@ export default Settings;
 
 
 
+
+function logout() {
+  throw new Error("Function not implemented.");
+}
 
