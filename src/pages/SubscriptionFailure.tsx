@@ -16,7 +16,7 @@ const SubscriptionFailure: React.FC  = () => {
 
   useEffect(() => {
     setTimeout(() => {
-      window.location.href = "https://vas-fastest-finger.netlify.app";
+      window.location.href = "https://vas-fastest-finger-subscribe.netlify.app";
     }, 8000);
   }, []);
 
