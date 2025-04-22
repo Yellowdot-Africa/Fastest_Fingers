@@ -5,7 +5,12 @@ import axios from "axios";
 
 const SubscriptionSuccess: React.FC = () => {
   const navigate = useNavigate();
-  const { setToken, setIsSubscribed} = useAuth();
+  const { setToken,isSubscribed, setIsSubscribed} = useAuth();
+
+  useEffect(() => {
+    console.log("On homepage: isSubscribed =", isSubscribed);
+  }, [isSubscribed]);
+  
 
   useEffect(() => {
     const fetchToken = async () => {
@@ -25,7 +30,6 @@ const SubscriptionSuccess: React.FC = () => {
           if (newToken) {
             setToken(newToken);
             setIsSubscribed(true);
-            sessionStorage.setItem("token", newToken);
             sessionStorage.setItem(
               "tokenExpirationTime",
               tokenExpiry.toString()
@@ -46,7 +50,9 @@ const SubscriptionSuccess: React.FC = () => {
     setTimeout(() => {
       navigate("/");
     }, 8000);
-  }, [navigate, setToken]);
+  }, [navigate, setToken,setIsSubscribed]);
+
+
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen text-center">
