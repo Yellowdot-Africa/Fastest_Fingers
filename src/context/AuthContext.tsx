@@ -45,6 +45,8 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     // }, []);
 
     useEffect(() => {
+        console.log("isSubscribed set to", isSubscribed);
+
         sessionStorage.setItem('token', token);
         sessionStorage.setItem('msisdn', msisdn);
         // sessionStorage.setItem('tokenExpiry', tokenExpiry.toString());
