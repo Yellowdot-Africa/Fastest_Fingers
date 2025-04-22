@@ -35,7 +35,7 @@ const SubscriptionSuccess: React.FC = () => {
               tokenExpiry.toString()
             );
             sessionStorage.setItem("isSubscribed", "true"); 
-
+console.log("testing success page redirect")
           }
         } else {
           console.error("Login failed:", response.data.message);
