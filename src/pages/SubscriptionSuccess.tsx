@@ -5,12 +5,9 @@ import axios from "axios";
 
 const SubscriptionSuccess: React.FC = () => {
   const navigate = useNavigate();
-  const { setToken,isSubscribed, setIsSubscribed} = useAuth();
+  const { setToken, setIsSubscribed} = useAuth();
 
-  useEffect(() => {
-    console.log("On homepage: isSubscribed =", isSubscribed);
-  }, [isSubscribed]);
-  
+
 
   useEffect(() => {
     const fetchToken = async () => {

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 // import TextInput from '../components/common/TextInput';
 import { useAuth } from "../context/AuthContext";
 // import { getUserProfile, saveUserProfile } from '../api/apiService';
@@ -23,7 +23,7 @@ interface SubscriptionEntry {
 
 const Settings: React.FC = () => {
   // const { token, msisdn, profile, setProfile } = useAuth();
-  const { msisdn, isSubscribed, setIsSubscribed  } = useAuth();
+  const { msisdn, setIsSubscribed  } = useAuth();
   const navigate = useNavigate();
 
   // console.log(msisdn)
