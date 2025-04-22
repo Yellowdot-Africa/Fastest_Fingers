@@ -33,12 +33,12 @@ const Settings: React.FC = () => {
 
 
 
-  useEffect(() => {
-    if (!isSubscribed) {
-      console.log("isSubscribed state changed to false. Redirecting...");
-      window.location.href = "https://vas-fastest-finger-subscribe.netlify.app/";
-    }
-  }, [isSubscribed]); 
+  // useEffect(() => {
+  //   if (!isSubscribed) {
+  //     console.log("isSubscribed state changed to false. Redirecting...");
+  //     window.location.href = "https://vas-fastest-finger-subscribe.netlify.app/";
+  //   }
+  // }, [isSubscribed]); 
 
 
   //   const [isEditing, setIsEditing] = useState(false);
