@@ -5,7 +5,7 @@ import axios from "axios";
 
 const SubscriptionSuccess: React.FC = () => {
   const navigate = useNavigate();
-  const { setToken } = useAuth();
+  const { setToken, setIsSubscribed} = useAuth();
 
   useEffect(() => {
     const fetchToken = async () => {
@@ -24,11 +24,14 @@ const SubscriptionSuccess: React.FC = () => {
 
           if (newToken) {
             setToken(newToken);
+            setIsSubscribed(true);
             sessionStorage.setItem("token", newToken);
             sessionStorage.setItem(
               "tokenExpirationTime",
               tokenExpiry.toString()
             );
+            sessionStorage.setItem("isSubscribed", "true"); 
+
           }
         } else {
           console.error("Login failed:", response.data.message);

@@ -148,8 +148,8 @@ const Settings: React.FC = () => {
         setResponseMessage(result.message || "Successfully unsubscribed.");
           setIsError(false);
 
-        // setIsSubscribed(false);
-        // sessionStorage.setItem("isSubscribed", "false");
+        setIsSubscribed(false);
+        sessionStorage.setItem("isSubscribed", "false");
 
         setTimeout(() => {
           window.location.href = "https://vas-fastest-finger-subscribe.netlify.app/";
