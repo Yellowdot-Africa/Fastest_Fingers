@@ -4,7 +4,7 @@ import { useAuth } from "../context/AuthContext";
 // import { getUserProfile, saveUserProfile } from '../api/apiService';
 // import { UserProfile } from '../types';
 // import { UnsubscribeResponse } from '../types';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 
 // import ErrorModal from '../components/modals/ErrorModal';
 // import { saveUserProfile } from '../api/apiService';
@@ -23,7 +23,7 @@ interface SubscriptionEntry {
 
 const Settings: React.FC = () => {
   // const { token, msisdn, profile, setProfile } = useAuth();
-  const { msisdn, setIsSubscribed  } = useAuth();
+  const { msisdn, setIsSubscribed, logout } = useAuth();
   const navigate = useNavigate();
 
   // console.log(msisdn)
@@ -31,15 +31,12 @@ const Settings: React.FC = () => {
   const [responseMessage, setResponseMessage] = useState<string | null>(null);
   const [isError, setIsError] = useState<boolean>(false);
 
-
-
   // useEffect(() => {
   //   if (!isSubscribed) {
   //     console.log("isSubscribed state changed to false. Redirecting...");
   //     window.location.href = "https://vas-fastest-finger-subscribe.netlify.app/";
   //   }
-  // }, [isSubscribed]); 
-
+  // }, [isSubscribed]);
 
   //   const [isEditing, setIsEditing] = useState(false);
   //   const [loading, setLoading] = useState(false);
@@ -125,7 +122,6 @@ const Settings: React.FC = () => {
   //       setError('');
   //   };
 
-
   const handleUnsubscribe = async (msisdn?: string) => {
     if (!msisdn) {
       // setResponseMessage("User not found. Please log in again.");
@@ -133,8 +129,8 @@ const Settings: React.FC = () => {
       // setTimeout(() => setResponseMessage(""), 5000);
       logout();
       setTimeout(() => {
-        navigate('/login');  
-    }, 500);
+        navigate("/login");
+      }, 500);
       return;
     }
 
@@ -142,20 +138,21 @@ const Settings: React.FC = () => {
       const result = await unsubscribeUser(msisdn);
 
       if (result.isSuccessful) {
-     
-      if (result.message.includes("Subscription successfully canceled")) {
-        console.log("Subscription canceled. Redirecting to subscription page...");
-        setResponseMessage(result.message || "Successfully unsubscribed.");
+        if (result.message.includes("Subscription successfully canceled")) {
+          console.log(
+            "Subscription canceled. Redirecting to subscription page..."
+          );
+          setResponseMessage(result.message || "Successfully unsubscribed.");
           setIsError(false);
 
-        setIsSubscribed(false);
-        sessionStorage.setItem("isSubscribed", "false");
+          setIsSubscribed(false);
+          sessionStorage.setItem("isSubscribed", "false");
 
-        setTimeout(() => {
-          window.location.href = "https://vas-fastest-finger-subscribe.netlify.app/";
-        }, 1000);
-      }
-      
+          setTimeout(() => {
+            window.location.href =
+              "https://vas-fastest-finger-subscribe.netlify.app/";
+          }, 1000);
+        }
       } else {
         setResponseMessage(
           result.message ||
@@ -321,11 +318,6 @@ const Settings: React.FC = () => {
 
 export default Settings;
 
-
-
-
-function logout() {
-  throw new Error("Function not implemented.");
-}
-
-
+// function logout() {
+//   throw new Error("Function not implemented.");
+// }
